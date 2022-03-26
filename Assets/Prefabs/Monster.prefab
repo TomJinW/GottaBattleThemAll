@@ -134,10 +134,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 8030342950738733401}
-  idleTimeInSecondsMin: 0
-  idleTimeInSecondsMax: 0
+  dexID: 0
+  listIndex: 0
+  idleTimeInSecondsMin: 2
+  idleTimeInSecondsMax: 4
   movementSpeed: 1
-  step: 0
+  step: 0.5
 --- !u!50 &8030342950738733401
 Rigidbody2D:
   serializedVersion: 4
