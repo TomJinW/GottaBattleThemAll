@@ -17,6 +17,7 @@ public class MovePickerTool : Editor
     {
         // Draw the default inspector
         DrawDefaultInspector();
+        EditorGUILayout.HelpBox("My Moves",MessageType.None);
 
         //get initial values
         MonsterBehavior monsterBehaviorScript = (MonsterBehavior)target;

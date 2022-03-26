@@ -6,7 +6,7 @@ using UnityEngine;
 public class MonsterBehavior : MonoBehaviour
 {
     [Header("Monster State Data")]
-
+    
     [SerializeField]
     private Type myType;
 
@@ -83,7 +83,7 @@ public struct Stats
 [Serializable]
 public enum Type
 {
-    Volcano, Swamp, Snowy
+    Volcano, Swamp, Snowy, None
 }
 
 [Serializable]
@@ -97,14 +97,16 @@ public struct Move
 {
     public String moveName;
     public Type moveType;
+    public Target moveTarget;
     public int baseDamage;
     public Stats statEffects;
     public int critProb;
 
-    public Move(string moveName,Type moveType, int baseDamage, Stats statEffects, int critProb)
+    public Move(string moveName,Type moveType, Target moveTarget, int baseDamage, Stats statEffects, int critProb)
     {
         this.moveName = moveName;
         this.moveType = moveType;
+        this.moveTarget = moveTarget;
         this.baseDamage = baseDamage;
         this.statEffects = statEffects;
         this.critProb = critProb;
