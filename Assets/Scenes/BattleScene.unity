@@ -123,6 +123,162 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &17090824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 17090825}
+  - component: {fileID: 17090826}
+  m_Layer: 0
+  m_Name: MoveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &17090825
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17090824}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.22409, y: 1.0854205, z: -12.284506}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &17090826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17090824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b00bb60ffec5b147bbf15828e829232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveNames:
+  - Flamethrower
+  - HydroPump
+  allMovesInGame:
+  - moveName: Flamethrower
+    moveType: 0
+    baseDamage: 6
+    statEffects:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    critProb: 10
+  - moveName: HydroPump
+    moveType: 1
+    baseDamage: 6
+    statEffects:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    critProb: 10
+--- !u!1 &297284012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 297284014}
+  - component: {fileID: 297284013}
+  m_Layer: 0
+  m_Name: TestMonster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &297284013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297284012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db8012f3b351964683af5311b5bdd68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myType: 0
+  myStats:
+    attack: 0
+    defense: 0
+    speed: 0
+    hp: 0
+  statsChangePerLevel:
+    attack: 0
+    defense: 0
+    speed: 0
+    hp: 0
+  moveSet:
+  - moveName: HydroPump
+    moveType: 1
+    baseDamage: 6
+    statEffects:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    critProb: 10
+  - moveName: HydroPump
+    moveType: 1
+    baseDamage: 6
+    statEffects:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    critProb: 10
+  - moveName: HydroPump
+    moveType: 1
+    baseDamage: 6
+    statEffects:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    critProb: 10
+  - moveName: HydroPump
+    moveType: 1
+    baseDamage: 6
+    statEffects:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    critProb: 10
+--- !u!4 &297284014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297284012}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.0371842, y: 0.80642486, z: -11.777366}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &415652034
 GameObject:
   m_ObjectHideFlags: 0
