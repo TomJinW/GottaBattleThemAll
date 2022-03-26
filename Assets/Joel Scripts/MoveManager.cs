@@ -6,6 +6,7 @@ public class MoveManager : MonoBehaviour
 {
     [HideInInspector] public List<string> moveNames;
     public List<Move> allMovesInGame;
+    
     private void OnValidate()
     {
         allMovesInGame.Clear();

@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveNames:
   - Flamethrower
-  - HydroPump
+  - Hydro Pump
   allMovesInGame:
   - moveName: Flamethrower
     moveType: 0
@@ -179,7 +179,7 @@ MonoBehaviour:
       speed: 0
       hp: 0
     critProb: 10
-  - moveName: HydroPump
+  - moveName: Hydro Pump
     moveType: 1
     baseDamage: 6
     statEffects:
@@ -229,8 +229,8 @@ MonoBehaviour:
     speed: 0
     hp: 0
   moveSet:
-  - moveName: HydroPump
-    moveType: 1
+  - moveName: Flamethrower
+    moveType: 0
     baseDamage: 6
     statEffects:
       attack: 0
@@ -238,8 +238,8 @@ MonoBehaviour:
       speed: 0
       hp: 0
     critProb: 10
-  - moveName: HydroPump
-    moveType: 1
+  - moveName: Flamethrower
+    moveType: 0
     baseDamage: 6
     statEffects:
       attack: 0
@@ -247,8 +247,8 @@ MonoBehaviour:
       speed: 0
       hp: 0
     critProb: 10
-  - moveName: HydroPump
-    moveType: 1
+  - moveName: Flamethrower
+    moveType: 0
     baseDamage: 6
     statEffects:
       attack: 0
@@ -256,8 +256,8 @@ MonoBehaviour:
       speed: 0
       hp: 0
     critProb: 10
-  - moveName: HydroPump
-    moveType: 1
+  - moveName: Flamethrower
+    moveType: 0
     baseDamage: 6
     statEffects:
       attack: 0

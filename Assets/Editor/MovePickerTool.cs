@@ -12,7 +12,7 @@ public class MovePickerTool : Editor
     int move2Index = 0;
     int move3Index = 0;
     int move4Index = 0;
-    
+
     public override void OnInspectorGUI()
     {
         // Draw the default inspector
@@ -40,7 +40,10 @@ public class MovePickerTool : Editor
         monsterBehaviorScript.moveSet[0] = allMoves[move1Index];
         monsterBehaviorScript.moveSet[1] = allMoves[move2Index];
         monsterBehaviorScript.moveSet[2] = allMoves[move3Index];
-        monsterBehaviorScript.moveSet[3] = allMoves[move4Index];                
+        monsterBehaviorScript.moveSet[3] = allMoves[move4Index];
+        
+        //currently sets the scene to dirty even if a monster is simply selected.
+        EditorUtility.SetDirty(target);
     }
 }
 
