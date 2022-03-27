@@ -8,7 +8,8 @@ public class TitleScreenController : MonoBehaviour
 {
     public GameObject anchor;
     public TitleScreenOptions currentSelectedOption = TitleScreenOptions.Start;
-
+    private bool optionMenuActivated = false;
+    public GameObject optionMenu;
     public void setOption()
     {
         anchor.transform.localPosition = Constants.titleScreenOptionPositions[(int)currentSelectedOption];
@@ -31,6 +32,8 @@ public class TitleScreenController : MonoBehaviour
                 SceneManager.LoadScene("MapScene");
                 break;
             case TitleScreenOptions.Option:
+                optionMenuActivated = !optionMenuActivated;
+                optionMenu.SetActive(optionMenuActivated);
                 break;
             case TitleScreenOptions.Quit:
                 Application.Quit();
