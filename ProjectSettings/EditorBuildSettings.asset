@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MapScene.unity
+    guid: 5e264d61ab64e4c349b544ea4408582a
+  - enabled: 1
+    path: Assets/Scenes/MapSceneSnow.unity
+    guid: a73992c9776d746ab81382495707cb0d
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 558c25ff99a9d4411a73b7ed404f28bd
+  - enabled: 1
+    path: Assets/Scenes/DummyBattleScene.unity
+    guid: ff10b6b4c4faa4868b2d05b5a998384d
   m_configObjects: {}

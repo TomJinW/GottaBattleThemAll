@@ -26,6 +26,9 @@ public class Monster : MonoBehaviour
 
     private bool startWandering = false;
     private Vector2 newPosition;
+
+    public bool allowWandering = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +44,7 @@ public class Monster : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (startWandering) {
+        if (startWandering && allowWandering) {
             rb.position = Vector2.MoveTowards(rb.position, newPosition,
                 movementSpeed * Time.deltaTime);
         }

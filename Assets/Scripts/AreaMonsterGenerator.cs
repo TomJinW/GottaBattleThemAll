@@ -10,7 +10,7 @@ public class AreaMonsterGenerator : MonoBehaviour
     [SerializeField]
     GameObject[] MonsterSpawnPoints;
     private int MonsterSpawnPointsCount;
-    private Monster [] Monsters;
+    public Monster [] Monsters;
     // Start is called before the first frame update
 
     [SerializeField]
@@ -33,6 +33,14 @@ public class AreaMonsterGenerator : MonoBehaviour
         Monsters = new Monster[MonsterSpawnPointsCount];
         for (int i = 0; i < MonsterSpawnPointsCount; i++) {
             GenerateNewMonster(i);
+        }
+        if (Internals.lastBattleMonsterIndex != -1)
+        {
+            int index = Internals.lastBattleMonsterIndex;
+            Internals.allowMapMovement = true;
+            Internals.lastBattleMonsterIndex = -1;
+            BattleEnds(index);
+            
         }
     }
 

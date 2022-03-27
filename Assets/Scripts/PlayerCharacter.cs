@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -9,13 +10,26 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     Animator animator;
     [SerializeField]
-    AreaMonsterGenerator areaMonsterGenerator;
+    public AreaMonsterGenerator areaMonsterGenerator;
+
+    [SerializeField]
+    float transtionTime = 1f;
+    [SerializeField]
+    string transtionAnimationName = "Window";
+    [SerializeField]
+    Animator transitionAnimator = null;
 
     public Rigidbody2D rb;
     Vector2 movement;
+
+    private string destinationSceneName = "DummyBattleScene";
     // Start is called before the first frame update
     void Start()
     {
+        if (Internals.teleported) {
+            Internals.teleported = false;
+            transform.position = Internals.teleportedLocation;
+        }
     }
 
     void FixedUpdate()
@@ -31,8 +45,15 @@ public class PlayerCharacter : MonoBehaviour
     void Update()
     {
         // Input
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        if (Internals.allowMapMovement)
+        {
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
+        }
+        else {
+            movement.x = 0;
+            movement.y = 0;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -40,12 +61,30 @@ public class PlayerCharacter : MonoBehaviour
         
         if (!Internals.battleStarted && Internals.allowBattle &&
             collision.gameObject.CompareTag("Monster")) {
+            collision.gameObject.GetComponent<Monster>().allowWandering = false;
             Debug.Log("COL");
             Internals.battleStarted = true;
 
-            int index = collision.gameObject.GetComponent<Monster>().listIndex;
-            areaMonsterGenerator.BattleEnds(index);
+            StartCoroutine(StartBattle(collision));
+
         }
        
+    }
+
+
+    IEnumerator StartBattle(Collision2D collision)
+    {
+        if (transitionAnimator != null)
+        {
+            Internals.transitionName = transtionAnimationName;
+            transitionAnimator.SetTrigger(transtionAnimationName + "_Start");
+        }
+        Internals.allowMapMovement = false;
+        yield return new WaitForSeconds(transtionTime);
+        Internals.teleported = true;
+        Internals.teleportedLocation = transform.position;
+        Internals.lastBattleSceneName = SceneManager.GetActiveScene().name;
+        Internals.lastBattleMonsterIndex = collision.gameObject.GetComponent<Monster>().listIndex;
+        SceneManager.LoadScene(destinationSceneName);
     }
 }

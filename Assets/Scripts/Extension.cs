@@ -35,6 +35,16 @@ static class Internals
     public static bool dialogOpened = false;
     public static bool battleStarted = false;
     public static bool allowBattle = true;
+
+    public static int lastBattleMonsterIndex = -1;
+    public static string lastBattleSceneName = "";
+
+    // Scene Teleport
+    public static bool teleported = false;
+    public static Vector2 teleportedLocation;
+    public static string transitionName = "CrossFade";
+    public static bool allowMapMovement = true;
+
 }
 
 static class Constants
