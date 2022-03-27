@@ -49,6 +49,14 @@ public class PlayerCharacter : MonoBehaviour
         {
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
+            if (Input.GetKey(KeyCode.RightShift)) {
+                movement.x *= 1.8f;
+                movement.y *= 1.8f;
+                animator.speed = 2.0f;
+            }
+            else {
+                animator.speed = 1.0f;
+            }
         }
         else {
             movement.x = 0;

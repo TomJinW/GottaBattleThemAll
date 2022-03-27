@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DummyBattleScene.unity
     guid: ff10b6b4c4faa4868b2d05b5a998384d
+  - enabled: 1
+    path: Assets/Scenes/MapSceneVolcano.unity
+    guid: 811a0861ce98e43ada7472fcc4c8199a
   m_configObjects: {}

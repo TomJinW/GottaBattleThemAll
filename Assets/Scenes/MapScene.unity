@@ -81224,7 +81224,7 @@ PrefabInstance:
       objectReference: {fileID: 248099400}
     - target: {fileID: 3695187534506602494, guid: cc7ca57c3aa6c4077abf3db3eb5704b4, type: 3}
       propertyPath: destinationSceneName
-      value: MapSceneSnow
+      value: MapSceneVolcano
       objectReference: {fileID: 0}
     - target: {fileID: 3695187534506602494, guid: cc7ca57c3aa6c4077abf3db3eb5704b4, type: 3}
       propertyPath: transtioAnimationnName
@@ -81236,11 +81236,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3695187534506602494, guid: cc7ca57c3aa6c4077abf3db3eb5704b4, type: 3}
       propertyPath: betweenScenesdestination.x
-      value: -34.3
+      value: -36.27
       objectReference: {fileID: 0}
     - target: {fileID: 3695187534506602494, guid: cc7ca57c3aa6c4077abf3db3eb5704b4, type: 3}
       propertyPath: betweenScenesdestination.y
-      value: 28.5
+      value: 27.7
       objectReference: {fileID: 0}
     - target: {fileID: 3695187534506602494, guid: cc7ca57c3aa6c4077abf3db3eb5704b4, type: 3}
       propertyPath: destinationAreaMonsterGenerator
