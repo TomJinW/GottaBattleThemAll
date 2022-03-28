@@ -30,6 +30,9 @@ public class BattleSystem : MonoBehaviour
 
     #region Routine Controllers
     private bool isDialoguesActive = false;
+    private bool isActionChoiceEnabled = false;
+    private int actionIndex;
+    private Coroutine ChoiceRoutineController = null;
     #endregion
 
     [Header("Battle State")]
@@ -67,30 +70,43 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator BattleRoutine()
     {
+        WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialoguesActive);
+        WaitUntil waitUntilActionChoiceComplete = new WaitUntil(() => ChoiceRoutineController == null);
+
         status = BattleState.begun;
-        printDialogues(new string[] { "A battle has begun!", "Make your first choice!"});
-        yield return new WaitUntil(() => !isDialoguesActive);
-
-    }
-    public void printDialogues(string[] dialogues)
-    {
-        StartCoroutine(DialogueRoutine(dialogues));
-    }
-
-    public IEnumerator DialogueRoutine(string[] dialogues)
-    {
-        isDialoguesActive = true;
-        foreach (string dialogue in dialogues)
+        printDialogues(new string[] { "A battle has begun!"});
+        yield return waitUntilDialogueComplete;
+        
+        while (isBattleActive)
         {
-            dialogueText.text = "";
-            foreach (char dChar in dialogue)
+            ChoiceRoutineController = StartCoroutine(ChoiceRoutine(1));
+            yield return waitUntilActionChoiceComplete;
+            
+            if(this.actionIndex==0)
             {
-                dialogueText.text += dChar;
-                yield return new WaitForSeconds(1 / letterPrintSpeed);
+                printDialogues(new string[] { "What will " + p_Monster1.getName() + "do?" });
             }
-            yield return new WaitForSeconds(pauseBetweenDialogues);
         }
-        isDialoguesActive = false;
+
+    }
+
+    public IEnumerator ChoiceRoutine(int choiceIndex)
+    {
+        WaitUntil waitUntilActionButtonPressed = new WaitUntil(() => !isActionChoiceEnabled);
+        WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialoguesActive);
+
+        status = choiceIndex == 1 ? BattleState.firstChoice : BattleState.secondChoice;
+        Monster monster = choiceIndex == 1 ? p_Monster1 : p_Monster2;
+        
+        printDialogues(new string[] { "What will " + monster.getName() + "do?" });
+        yield return waitUntilDialogueComplete;
+        actionSelection.SetActive(true);
+        
+        isActionChoiceEnabled = true;
+        yield return waitUntilActionButtonPressed;
+
+        actionSelection.SetActive(false);
+        ChoiceRoutineController = null;
     }
 
     public void setUnitUIElements()
@@ -107,6 +123,33 @@ public class BattleSystem : MonoBehaviour
         playerUnit.setNames(p_Monster1.getName(), p_Monster2.getName());
         opponentUnit.setNames(o_Monster1.getName(), o_Monster2.getName());
     }
+    public void printDialogues(string[] dialogues)
+    {
+        StartCoroutine(DialogueRoutine(dialogues));
+    }
+    public IEnumerator DialogueRoutine(string[] dialogues)
+    {
+        isDialoguesActive = true;
+        foreach (string dialogue in dialogues)
+        {
+            dialogueText.text = "";
+            foreach (char dChar in dialogue)
+            {
+                dialogueText.text += dChar;
+                yield return new WaitForSeconds(1 / letterPrintSpeed);
+            }
+            yield return new WaitForSeconds(pauseBetweenDialogues);
+        }
+        isDialoguesActive = false;
+    }
+    
+    public void chooseAction(int actionIndex)
+    {
+        this.actionIndex = actionIndex;
+        isActionChoiceEnabled = false;
+    }
+
+    
 }
 
 
