@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Persistent Information")]
+    public List<MonsterBase> allMonsterInGame;
+
     [Header("Battle Information")]
     public List<Monster> partyMonsters;
     public Monster opMonster1;
@@ -12,6 +15,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        foreach(Monster monster in partyMonsters)
+            monster.Init();
+        opMonster1.Init();
+        opMonster2.Init();
+
         StartCoroutine(InvokeBattleRoutine());
     }
     IEnumerator InvokeBattleRoutine()

@@ -48,7 +48,7 @@ public class UnitControl : MonoBehaviour
     }
     public void setSecondName(string name)
     {
-        pokemonOneName.text = name;
+        pokemonTwoName.text = name;
     }
     public void setNames(string firstName, string secondName)
     {
