@@ -5,11 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Move", menuName = "Persistent/Move")]
 public class MoveBase : ScriptableObject
 {
-    public new string name;
-    public Type type;
-    public Target target;
-    public int baseDamage;
-    public int critProb;
-    public Stats statEffects;
+    [SerializeField] private new string name;
+    [SerializeField] private Type type;
+    [SerializeField] private Target target;
+    [SerializeField] private int baseDamage;
+    [SerializeField] private int critProb;
+    [SerializeField] private Stats statEffects;
+
+    public string Name { get => name;}
+    public Type Type { get => type;}
+    public Target Target { get => target;}
+    public int BaseDamage { get => baseDamage;}
+    public int CritProb { get => critProb;}
+    public Stats StatEffects { get => statEffects;}
 }
 

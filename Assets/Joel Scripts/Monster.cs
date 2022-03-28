@@ -14,41 +14,32 @@ public class Monster
     //variable state
     [SerializeField] private int level;
     [SerializeField] private Stats leveledStats;
+    
+    //battle variable state
     [SerializeField] private int activeHP;
     [SerializeField] private bool isFainted;
 
+    public MonsterBase BaseState { get => baseState; set => baseState = value; }
+    public int Level { get => level;}
+    public Stats LeveledStats { get => leveledStats;}
+    public bool IsFainted { get => isFainted; set => isFainted = value; }
+
     public void Init()
     {
-        level = Mathf.Clamp(level, MIN_LEVEL, MAX_LEVEL);
-        leveledStats = baseState.baseStats;
+        level = Mathf.Clamp(Level, MIN_LEVEL, MAX_LEVEL);
+        leveledStats = BaseState.BaseStats;
 
-        for(int i = 2;i<=level;++i)
+        for(int i = 2;i<=Level;++i)
             levelUp();
 
-        activeHP = leveledStats.hp;
-        isFainted = false;
+        activeHP = LeveledStats.hp;
+        IsFainted = false;
     }
     
     #region getters
-    public string getName()
-    {
-        return baseState.name;
-    }
     public float getNormalizedHP()
     {
-        return activeHP / leveledStats.hp;
-    }
-    public Sprite getSprite()
-    {
-        return baseState.sprite;
-    }
-    public Stats getLeveledStats()
-    {
-        return leveledStats;
-    }
-    public bool isDefeated()
-    {
-        return isFainted;
+        return activeHP / LeveledStats.hp;
     }
     #endregion
 
@@ -59,18 +50,18 @@ public class Monster
             return;
         
         level++;
-        leveledStats += baseState.statsChangePerLevel;
+        leveledStats += BaseState.StatsChangePerLevel;
     }
     public void takeDamage(int damage)
     {
         activeHP -= damage;
         activeHP = Mathf.Max(damage, 0);
-        isFainted = activeHP == 0 ? true : false;
+        IsFainted = activeHP == 0 ? true : false;
     }
     public void revive()
     {
-        activeHP = leveledStats.hp;
-        isFainted = false;
+        activeHP = LeveledStats.hp;
+        IsFainted = false;
     }
     #endregion
 }

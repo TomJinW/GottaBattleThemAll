@@ -6,12 +6,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Monster",menuName = "Persistent/Monster")]
 public class MonsterBase : ScriptableObject
 {
-    public new string name;
-    public Sprite sprite;
-    public Type type;
-    public Stats baseStats;
-    public Stats statsChangePerLevel;
-    public MoveBase[] moves = new MoveBase[4];
+    [SerializeField] private new string name;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private Type type;
+    [SerializeField] private Stats baseStats;
+    [SerializeField] private Stats statsChangePerLevel;
+    [SerializeField] private MoveBase[] moves = new MoveBase[4];
+
+    public string Name { get => name;}
+    public Sprite Sprite { get => sprite;}
+    public Type Type { get => type;}
+    public Stats BaseStats { get => baseStats;}
+    public Stats StatsChangePerLevel { get => statsChangePerLevel;}
+    public MoveBase[] Moves { get => moves;}
 }
 
 
