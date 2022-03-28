@@ -41,6 +41,7 @@ public class PlayerCharacter : MonoBehaviour
         animator.SetFloat("Speed", movement.sqrMagnitude);
     }
 
+    public GameObject Menu;
     // Update is called once per frame
     void Update()
     {
@@ -61,6 +62,19 @@ public class PlayerCharacter : MonoBehaviour
         else {
             movement.x = 0;
             movement.y = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Time.timeScale != 0)
+            {
+                Internals.allowMapMovement = false;
+                Time.timeScale = 0;
+                Menu.SetActive(true);
+            }
+            else {
+                //Internals.allowMapMovement = true;
+                //Time.timeScale = 1;
+                //Menu.SetActive(false);
+            }
         }
     }
 

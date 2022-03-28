@@ -85,4 +85,17 @@ static class Extension
         }
         return output;
     }
+
+    public static int Next(this int input, int size) {
+        int newValue = input + 1;
+        if (newValue >= size) { newValue = 0; }
+        return newValue;
+    }
+
+    public static int Previous(this int input, int size)
+    {
+        int newValue = input - 1;
+        if (newValue < 0) { newValue = size - 1; }
+        return newValue;
+    }
 }

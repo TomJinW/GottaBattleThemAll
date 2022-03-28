@@ -40,8 +40,13 @@ public class TeleportPoint : MonoBehaviour
     {
 
     }
+    public void TeleportTo(Vector2 destination, string sceneName) {
+        Time.timeScale = 1;
+        Internals.allowMapMovement = true;
+        StartCoroutine(LoadLevel(null, destination, sceneName));
+    }
 
-    IEnumerator LoadLevel(Collision2D collision) {
+    IEnumerator LoadLevel(Collision2D collision,Vector2 position,string sceneName) {
         if (transitionAnimator != null)
         {
             Internals.transitionName = transtionAnimationName;
@@ -52,10 +57,10 @@ public class TeleportPoint : MonoBehaviour
         {
             case TeleportType.BetweenScenes:
                 Internals.teleported = true;
-                Internals.teleportedLocation = betweenScenesdestination;
+                Internals.teleportedLocation = position;
                 Internals.allowBattle = true;
                 Internals.lastBattleMonsterIndex = -1;
-                SceneManager.LoadScene(destinationSceneName);
+                SceneManager.LoadScene(sceneName);
                 break;
             case TeleportType.InScene:
                 collision.gameObject.transform.position = inScenedestination.transform.position;
@@ -71,7 +76,7 @@ public class TeleportPoint : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            StartCoroutine(LoadLevel(collision));
+            StartCoroutine(LoadLevel(collision,betweenScenesdestination,destinationSceneName));
         }
     }
 }
