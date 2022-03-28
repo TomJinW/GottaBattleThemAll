@@ -69,11 +69,15 @@ public class PlayerCharacter : MonoBehaviour
                 Internals.allowMapMovement = false;
                 Time.timeScale = 0;
                 Menu.SetActive(true);
+                Menu menu = Menu.GetComponent<Menu>();
+                menu.mainPointerIndex[1] = 0;
+                menu.mainPointerIndex[0] = 0;
+                menu.setPointerPosition();
             }
             else {
-                //Internals.allowMapMovement = true;
-                //Time.timeScale = 1;
-                //Menu.SetActive(false);
+                Internals.allowMapMovement = true;
+                Time.timeScale = 1;
+                Menu.SetActive(false);
             }
         }
     }

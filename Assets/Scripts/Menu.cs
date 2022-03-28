@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    private int [] mainPointerIndex = { 0,0 };
+    public int [] mainPointerIndex = { 0,0 };
     private int [] mainMenuSize = {7,7};
 
     [SerializeField]
@@ -90,10 +90,12 @@ public class Menu : MonoBehaviour
         }
 
     }
-    void setPointerPosition() {
+    public void setPointerPosition() {
         //Debug.Log(mainPointerIndex);
         switch (mainPointerIndex[0]) {
             case 0:
+                windowGroups[0].SetActive(false);
+                windowGroups[1].SetActive(false);
                 float x1 = mainMenuOptionSelector.transform.position.x;
                 mainMenuOptionSelector.transform.position = new Vector2(x1,
                     mainMenuOptions[mainPointerIndex[1]].transform.position.y);
@@ -111,6 +113,7 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //mainPointerIndex[1] = 0;
         setPointerPosition();
     }
 
