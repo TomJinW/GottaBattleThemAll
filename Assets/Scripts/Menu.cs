@@ -94,18 +94,14 @@ public class Menu : MonoBehaviour
         //Debug.Log(mainPointerIndex);
         switch (mainPointerIndex[0]) {
             case 0:
-                mainMenuOptionSelector.transform.position =
-                mainMenuOptions[mainPointerIndex[1]].transform.position;
-                mainMenuOptionSelector.transform.position = new Vector2(
-                    mainMenuOptionSelector.transform.position.x - 50,
-                    mainMenuOptionSelector.transform.position.y);
+                float x1 = mainMenuOptionSelector.transform.position.x;
+                mainMenuOptionSelector.transform.position = new Vector2(x1,
+                    mainMenuOptions[mainPointerIndex[1]].transform.position.y);
                 break;
             case 1:
-                flyMenuOptionSelector.transform.position =
-flyMenuOptions[mainPointerIndex[1]].transform.position;
-                flyMenuOptionSelector.transform.position = new Vector2(
-                    flyMenuOptionSelector.transform.position.x - 108,
-                    flyMenuOptionSelector.transform.position.y);
+                float x2 = flyMenuOptionSelector.transform.position.x;
+                flyMenuOptionSelector.transform.position = new Vector2(x2,
+                    flyMenuOptions[mainPointerIndex[1]].transform.position.y);
                 break;
             default:
                 break;
