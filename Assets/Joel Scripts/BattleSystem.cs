@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleSystem : MonoBehaviour
 {
+    #region Battle System State
     public static bool isBattleActive = false;
     
     [Header("Loop Information")]
@@ -81,8 +82,9 @@ public class BattleSystem : MonoBehaviour
     Monster p_Monster2;
     Monster o_Monster1;
     Monster o_Monster2;
-    
+    #endregion
 
+    #region UI Functions
     private void EnableActionSelectorUI()
     {
         ResetUISelectors();
@@ -170,7 +172,7 @@ public class BattleSystem : MonoBehaviour
             buttonText.text = monster.BaseState.Name + " " + (monster.getNormalizedHP() * 100)+"%";
         }
     }
-
+    #endregion
 
     public void intializeBattle(List<Monster> partyMonsters, Monster opMonster1, Monster opMonster2)
     {
@@ -198,7 +200,8 @@ public class BattleSystem : MonoBehaviour
 
         isBattleActive = true;
         status = BATTLE.beginLoop;
-        
+        StartCoroutine(InterruptRoutine());
+
         printDialogues(new string[] { "A battle has begun!"});
         yield return waitUntilDialogueComplete;
         
@@ -207,14 +210,14 @@ public class BattleSystem : MonoBehaviour
             if (status == BATTLE.beginLoop || status==BATTLE.firstAction)
             {
                 status++; //choose first/second monsters action type
-                StartCoroutine(ActionRoutine());
+                currentRoutineReference = StartCoroutine(ActionRoutine());
                 yield return waitUntilActionRoutineComplete;
             }
             else if (status == BATTLE.choosingFirstActionType || status == BATTLE.choosingSecondActionType)
             {
                 status++; //choose action of chosen type for first/second monster
                 int actionIndex = (int) (status == BATTLE.firstAction? monsterOneData.actionType : monsterTwoData.actionType);
-                StartCoroutine(branchingActionRoutines[actionIndex]());
+                currentRoutineReference = StartCoroutine(branchingActionRoutines[actionIndex]());
                 yield return branchingRoutineYields[actionIndex];
             }
             else if (status == BATTLE.secondAction)
@@ -365,52 +368,6 @@ public class BattleSystem : MonoBehaviour
     }
     #endregion
 
-    /*   public IEnumerator HandleActionRoutine()
-       {
-           isHandleActionRoutineActive = true;
-
-           WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);
-           WaitUntil waitUntilMoveButtonPressed = new WaitUntil(() => isMoveButtonPressed);
-           WaitUntil waitUntilPartyButtonPressed = new WaitUntil(() => isPartyButtonPressed);
-
-           Monster monster = status == BATTLE.choosingFirstActionType ? p_Monster1 : (status == BATTLE.choosingSecondActionType ? p_Monster2 : null);
-           ExecuteStageData.ActionType action = status == BATTLE.choosingFirstActionType ? monsterOneData.actionType : monsterTwoData.actionType;
-
-           if(action==ExecuteStageData.ActionType.move)
-           {
-               printDialogues(new string[] { "Which attack will " + monster.BaseState.Name + " use?" });
-               yield return waitUntilDialogueComplete;
-
-               assignMovesToMoveButtons(monster);
-               EnableMoveSelectorUI();
-
-               yield return waitUntilMoveButtonPressed;
-               ResetUISelectors();
-           }
-           else if(action == ExecuteStageData.ActionType.items)
-           {
-               //items stuff
-           }
-           else if(action == ExecuteStageData.ActionType.party)
-           {
-               printDialogues(new string[] { "Which monster should replace " + monster.BaseState.Name + "?" });
-               yield return waitUntilDialogueComplete;
-
-
-               EnablePartySelectorUI();
-
-               yield return waitUntilPartyButtonPressed;
-               ResetUISelectors();
-           }
-           else
-           {
-               //run
-           }
-
-           isHandleActionRoutineActive = false;
-       }*/
-
-
     #region Dialogue Routine and its helpers
     public IEnumerator DialogueRoutine(string[] dialogues)
     {
@@ -430,6 +387,55 @@ public class BattleSystem : MonoBehaviour
     public void printDialogues(string[] dialogues)
     {
         StartCoroutine(DialogueRoutine(dialogues));
+    }
+    #endregion
+
+    #region Backtracking mechanism
+    private bool escapeKeyPressed = false;
+    private Coroutine currentRoutineReference;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && !escapeKeyPressed)
+            escapeKeyPressed = true;
+    }
+
+    private bool CheckRoutineBooleans()
+    {
+        if (isActionRoutineActive || isMoveRoutineActive || isItemRoutineActive || isPartyRoutineActive || isRunRoutineActive)
+            return true;
+        else
+            return false;
+    }
+    private void ResetRoutines()
+    {
+        if (!CheckRoutineBooleans())
+            return;
+        
+        StopCoroutine(currentRoutineReference);
+        isActionRoutineActive = isMoveRoutineActive = isItemRoutineActive = isPartyRoutineActive = isRunRoutineActive = false;
+    }
+    private IEnumerator InterruptRoutine()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.1f);
+        while(isBattleActive)
+        {
+            yield return wait;
+            
+            if (status < BATTLE.firstAction || status > BATTLE.secondAction)
+                continue;
+            
+            if(escapeKeyPressed)
+            {
+                yield return waitUntilDialogueRoutineComplete;
+                
+                status-=2; 
+                ResetRoutines();
+                ResetDialogueUIElements();
+
+                escapeKeyPressed = false;
+            }
+        }
     }
     #endregion
 }
