@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        foreach(Monster monster in partyMonsters)
+        foreach (Monster monster in partyMonsters)
             monster.Init();
         opMonster1.Init();
         opMonster2.Init();

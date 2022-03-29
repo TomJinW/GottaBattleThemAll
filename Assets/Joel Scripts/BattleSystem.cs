@@ -6,6 +6,32 @@ using UnityEngine.UI;
 public class BattleSystem : MonoBehaviour
 {
     public static bool isBattleActive = false;
+    
+    [Header("Loop Information")]
+    [SerializeField] private BATTLE status;
+
+    
+    private delegate IEnumerator BranchedAction();
+    private BranchedAction[] branchingActionRoutines;
+    private WaitUntil[] branchingRoutineYields;
+    private void Start()
+    {
+        status = BATTLE.inactive;
+        
+        branchingActionRoutines = new BranchedAction[4];
+        branchingActionRoutines[0] = MoveRoutine;
+        branchingActionRoutines[1] = ItemRoutine;
+        branchingActionRoutines[2] = PartyRoutine;
+        branchingActionRoutines[3] = RunRoutine;
+
+        branchingRoutineYields = new WaitUntil[4];
+        branchingRoutineYields[0] = new WaitUntil(() => !isMoveRoutineActive);
+        branchingRoutineYields[1] = new WaitUntil(() => !isItemRoutineActive);
+        branchingRoutineYields[2] = new WaitUntil(() => !isPartyRoutineActive);
+        branchingRoutineYields[3] = new WaitUntil(() => !isRunRoutineActive);
+
+        waitUntilDialogueRoutineComplete = new WaitUntil(() => !isDialogueRoutineActive);
+    }
 
     [Header("Unit Information")]
     [SerializeField] UnitControl playerUnit;
@@ -15,42 +41,78 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Text dialogueText;
     [SerializeField] private float letterPrintSpeed;
     [SerializeField] private float pauseBetweenDialogues;
+    private bool isDialogueRoutineActive = false;
+    private WaitUntil waitUntilDialogueRoutineComplete;
 
+    [Header("Action Routine Information")]
     [SerializeField] GameObject actionSelector;
+    private bool isActionRoutineActive = false; 
+    private bool isActionButtonPressed = false; 
+
+    [Header("Move Routine Information")]
     [SerializeField] GameObject moveSelector;
     [SerializeField] Text[] moveButtonText;
+    private bool isMoveRoutineActive = false;
+    private bool isMoveButtonPressed = false;
 
-    #region Monster Variables
+    [Header("Item Routine Information")]
+    [SerializeField] GameObject itemSelector;
+    private bool isItemRoutineActive = false;
+    private bool isItemButtonPressed = false;
+
+    [Header("Party Routine Information")]
+    [SerializeField] GameObject partySelector;
+    [SerializeField] GameObject partyButtonPrefab;
+    [SerializeField] Transform partyButtonMommy;
+    private bool isPartyRoutineActive = false;
+    private bool isPartyButtonPressed = false;
+
+    [Header("Run Routine Information")]
+    [SerializeField] GameObject runSelector;
+    private bool isRunRoutineActive = false;
+    private bool isRunButtonPressed = false;
+
+    private ExecuteStageData monsterOneData;
+    private ExecuteStageData monsterTwoData;
+    
     List<Monster> party;
     Monster p_Monster1;
     Monster p_Monster2;
     Monster o_Monster1;
     Monster o_Monster2;
-    #endregion
+    
 
-    #region Battle Loop Controllers
-    private bool isDialogueRoutineActive = false; //reflects if dialogue routine is active
-
-    private bool isActionChoiceRoutineActive = false; //for action choice routine
-    private bool isActionButtonPressed = false; //to check if action button is pressed
-    private bool isMoveButtonPressed = false; //to check if move button is pressed
-    private bool isHandleActionRoutineActive = false; //for action choice routine
-    private ACTION monsterOneAction;
-    private ACTION monsterTwoAction;
-
-    private void EnableActionSelector()
+    private void EnableActionSelectorUI()
     {
-        ResetSelectors();
+        ResetUISelectors();
         actionSelector.SetActive(true);
         isActionButtonPressed = false;
     }
-    private void EnableMoveSelector()
+    private void EnableMoveSelectorUI()
     {
-        ResetSelectors();
+        ResetUISelectors();
         moveSelector.SetActive(true);
         isMoveButtonPressed = false;
     }
-    public void ResetSelectors()
+    private void EnableItemSelectorUI()
+    {
+        ResetUISelectors();
+        itemSelector.SetActive(true);
+        isItemButtonPressed = false;
+    }
+    private void EnablePartySelectorUI()
+    {
+        ResetUISelectors();
+        partySelector.SetActive(true);
+        isPartyButtonPressed = false;
+    }
+    private void EnableRunSelectorUI()
+    {
+        ResetUISelectors();
+        runSelector.SetActive(true);
+        isRunButtonPressed = false;
+    }
+    public void ResetUISelectors()
     {
         //Action Selection
         actionSelector.SetActive(false);
@@ -59,38 +121,25 @@ public class BattleSystem : MonoBehaviour
         //Moves Selection
         moveSelector.SetActive(false);
         isMoveButtonPressed = false;
+
+        //Item Selection (Archit code required)
+        /*itemSelector.SetActive(false);
+        isItemButtonPressed = false;*/
+
+        //Party Sellection
+        partySelector.SetActive(false);
+        isPartyButtonPressed = false;
+
+        //Run Selection
+        /*runSelector.SetActive(false);
+        isRunButtonPressed = false;*/
     }
-    #endregion
-
-    [Header("Battle State")]
-    [SerializeField] private BATTLE status = BATTLE.inactive;
-
-    #region Initilaizers
-    public void intializeBattle(List<Monster> partyMonsters, Monster opMonster1, Monster opMonster2)
+    public void resetDialogueUIElements()
     {
-        #region Unit Setup
-        //player setup
-        this.party = partyMonsters;
-        p_Monster1 =  partyMonsters[0];
-        p_Monster2 = partyMonsters[1];
-
-        //opponent setup
-        this.o_Monster1 = opMonster1;
-        this.o_Monster2 = opMonster2;
-
-        setUnitUIElements();
-        #endregion
-
-        #region Dialogue Panel Setup
         dialogueText.text = "";
-        actionSelector.SetActive(false);
-        moveSelector.SetActive(false);
-        #endregion
-
-        //begin battle
-        StartCoroutine(BattleRoutine());
+        ResetUISelectors();
     }
-    public void setUnitUIElements()
+    public void setUnitUIToActiveMonsters()
     {
         //Setting Sprites
         playerUnit.setSprites(p_Monster1.BaseState.Sprite, p_Monster2.BaseState.Sprite);
@@ -104,130 +153,211 @@ public class BattleSystem : MonoBehaviour
         playerUnit.setNames(p_Monster1.BaseState.Name, p_Monster2.BaseState.Name);
         opponentUnit.setNames(o_Monster1.BaseState.Name, o_Monster2.BaseState.Name);
     }
-    #endregion
 
+    public void intializeBattle(List<Monster> partyMonsters, Monster opMonster1, Monster opMonster2)
+    {
+        //player setup
+        this.party = partyMonsters;
+        p_Monster1 =  partyMonsters[0];
+        p_Monster2 = partyMonsters[1];
+
+        //opponent setup
+        this.o_Monster1 = opMonster1;
+        this.o_Monster2 = opMonster2;
+
+        //UI setup
+        setUnitUIToActiveMonsters();
+        resetDialogueUIElements();
+
+        //begin battle
+        StartCoroutine(BattleRoutine());
+    }
+
+    
     public IEnumerator BattleRoutine()
     {
-        isBattleActive = true;
-        status = BATTLE.begun;
-
         WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);
-        WaitUntil waitUntilActionChoiceComplete = new WaitUntil(() => !isActionChoiceRoutineActive);
-        WaitUntil waitUntilActionHandleComplete = new WaitUntil(() => !isHandleActionRoutineActive);
+        WaitUntil waitUntilActionRoutineComplete = new WaitUntil(() => !isActionRoutineActive);
 
+        isBattleActive = true;
+        status = BATTLE.beginLoop;
+        
         printDialogues(new string[] { "A battle has begun!"});
         yield return waitUntilDialogueComplete;
         
         while (isBattleActive)
         {
-            status = BATTLE.firstChoice;
-            StartCoroutine(ActionChoiceRoutine());
-            yield return waitUntilActionChoiceComplete;
-            StartCoroutine(HandleActionRoutine());
-            yield return waitUntilActionHandleComplete;
-            
-            status = BATTLE.secondChoice;
-            StartCoroutine(ActionChoiceRoutine());
-            yield return waitUntilActionChoiceComplete;
-            StartCoroutine(HandleActionRoutine());
-            yield return waitUntilActionHandleComplete;
+            if (status == BATTLE.beginLoop || status==BATTLE.firstAction)
+            {
+                status++; //choose first/second monsters action type
+                StartCoroutine(ActionRoutine());
+                yield return waitUntilActionRoutineComplete;
+            }
+            else if (status == BATTLE.choosingFirstActionType || status == BATTLE.choosingSecondActionType)
+            {
+                status++; //choose action of chosen type for first/second monster
+                int actionIndex = (int)monsterOneData.actionType;
+                StartCoroutine(branchingActionRoutines[actionIndex]());
+                yield return branchingRoutineYields[actionIndex];
+            }
+            else if (status == BATTLE.secondAction)
+            {
+                status++; //second action complete, time to execute!
+                
+                //execution routine called here
+            }
+            else if(status == BATTLE.execution)
+            {
+                status++; //for now default to battle finished
 
-            isBattleActive = false;
+                //execution complete
+
+                //go to start if battle not over, else exit battle and update state based on battle result
+            }
+            else if(status == BATTLE.finished)
+            {
+                isBattleActive = false;
+                status = BATTLE.inactive;
+            }
         }
         Debug.Log("Battle Over!");
     }
 
-    #region Action Choice functions
-    public IEnumerator ActionChoiceRoutine()
+    #region Action Routine and its helpers
+    private IEnumerator ActionRoutine()
     {
-        isActionChoiceRoutineActive = true;
+        isActionRoutineActive = true;
 
         WaitUntil waitUntilActionButtonPressed = new WaitUntil(() => isActionButtonPressed);
-        WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);        
-        Monster monster = status == BATTLE.firstChoice ? p_Monster1 : (status == BATTLE.secondChoice ? p_Monster2 : null);
+        WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);
+        Monster monster = status == BATTLE.choosingFirstActionType ? p_Monster1 : (status == BATTLE.choosingSecondActionType ? p_Monster2 : null);
        
         printDialogues(new string[] { "What will " + monster.BaseState.Name + " do?" });
         yield return waitUntilDialogueComplete;
         
-        EnableActionSelector();
+        EnableActionSelectorUI();
         yield return waitUntilActionButtonPressed;
-        ResetSelectors();
-        isActionChoiceRoutineActive = false;
+
+        ResetUISelectors();
+        isActionRoutineActive = false;
     }
     public void chooseAction(int actionIndex)
     {
         isActionButtonPressed = true;
 
-        if (status == BATTLE.firstChoice)
-            monsterOneAction.actionType = (ACTION.TYPE)actionIndex;
-        else if (status == BATTLE.secondChoice)
-            monsterTwoAction.actionType = (ACTION.TYPE)actionIndex;
+        if (status == BATTLE.choosingFirstActionType)
+            monsterOneData.actionType = (ExecuteStageData.ActionType)actionIndex;
+        else if (status == BATTLE.choosingSecondActionType)
+            monsterTwoData.actionType = (ExecuteStageData.ActionType)actionIndex;
     }
+    #endregion
 
+    #region Move Routine and its helpers
+    private IEnumerator MoveRoutine()
+    {
+        isMoveRoutineActive = true;
+        
+        WaitUntil waitUntilMoveButtonPressed = new WaitUntil(() => isMoveButtonPressed);
+        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        
+        printDialogues(new string[] { "Which attack will " + monster.BaseState.Name + " use?" });
+        yield return waitUntilDialogueRoutineComplete;
+
+        assignMovesToMoveButtons(monster);
+        EnableMoveSelectorUI();
+
+        yield return waitUntilMoveButtonPressed;
+        ResetUISelectors();
+
+        isMoveRoutineActive = false;
+    }
+    public void assignMovesToMoveButtons(Monster monster)
+    {
+        MoveBase[] monsterMoves = monster.BaseState.Moves;
+
+        for(int i = 0;i<monsterMoves.Length;i++)
+            moveButtonText[i].text = monsterMoves[i].Name;
+    }
     public void chooseMove(int moveIndex)
     {
         isMoveButtonPressed = true;
 
-        if (status == BATTLE.firstChoice)
-            monsterOneAction.nextMove = p_Monster1.BaseState.Moves[moveIndex];
-        else if (status == BATTLE.secondChoice)
-            monsterTwoAction.nextMove = p_Monster2.BaseState.Moves[moveIndex];
-    }
-    public IEnumerator HandleActionRoutine()
-    {
-        isHandleActionRoutineActive = true;
-
-        WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);
-        WaitUntil waitUntilMoveButtonPressed = new WaitUntil(() => isMoveButtonPressed);
-
-        Monster monster = status == BATTLE.firstChoice ? p_Monster1 : (status == BATTLE.secondChoice ? p_Monster2 : null);
-        ACTION.TYPE action = status == BATTLE.firstChoice ? monsterOneAction.actionType : monsterTwoAction.actionType;
-        
-        if(action==ACTION.TYPE.fight)
-        {
-            printDialogues(new string[] { "Which attack will " + monster.BaseState.Name + " use?" });
-            yield return waitUntilDialogueComplete;
-
-            assignMovesToMoveButtons(monster);
-            EnableMoveSelector();
-
-            yield return waitUntilMoveButtonPressed;
-            ResetSelectors();
-        }
-        else if(action == ACTION.TYPE.items)
-        {
-            //items shit
-        }
-        else if(action == ACTION.TYPE.party)
-        {
-            //party shit
-        }
-        else
-        {
-            //run
-        }
-
-        isHandleActionRoutineActive = false;
-    }
-
-    public void assignMovesToMoveButtons(Monster monster)
-    {
-        MoveBase[] monsterMoves = monster.BaseState.Moves;
-        
-        int counter = 0;
-        foreach (Text buttonText in moveButtonText)
-        {
-            buttonText.text = monsterMoves[counter].Name;
-            counter++;
-        }
+        if (status == BATTLE.firstAction)
+            monsterOneData.nextMove = p_Monster1.BaseState.Moves[moveIndex];
+        else if (status == BATTLE.secondAction)
+            monsterTwoData.nextMove = p_Monster2.BaseState.Moves[moveIndex];
     }
     #endregion
 
-    #region Dialogue functions
-    public void printDialogues(string[] dialogues)
+    #region Item Routine and its helpers
+    private IEnumerator ItemRoutine()
     {
-        StartCoroutine(DialogueRoutine(dialogues));
+        //Requires Archit code
+        yield return null;
     }
+    #endregion
+
+    #region Party Routine and its helpers
+    private IEnumerator PartyRoutine()
+    {
+        yield return null;
+    }
+    #endregion
+
+    #region Run Routine and its helpers
+    private IEnumerator RunRoutine()
+    {
+        yield return null;
+    }
+    #endregion
+
+    /*   public IEnumerator HandleActionRoutine()
+       {
+           isHandleActionRoutineActive = true;
+
+           WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);
+           WaitUntil waitUntilMoveButtonPressed = new WaitUntil(() => isMoveButtonPressed);
+           WaitUntil waitUntilPartyButtonPressed = new WaitUntil(() => isPartyButtonPressed);
+
+           Monster monster = status == BATTLE.choosingFirstActionType ? p_Monster1 : (status == BATTLE.choosingSecondActionType ? p_Monster2 : null);
+           ExecuteStageData.ActionType action = status == BATTLE.choosingFirstActionType ? monsterOneData.actionType : monsterTwoData.actionType;
+
+           if(action==ExecuteStageData.ActionType.move)
+           {
+               printDialogues(new string[] { "Which attack will " + monster.BaseState.Name + " use?" });
+               yield return waitUntilDialogueComplete;
+
+               assignMovesToMoveButtons(monster);
+               EnableMoveSelectorUI();
+
+               yield return waitUntilMoveButtonPressed;
+               ResetUISelectors();
+           }
+           else if(action == ExecuteStageData.ActionType.items)
+           {
+               //items stuff
+           }
+           else if(action == ExecuteStageData.ActionType.party)
+           {
+               printDialogues(new string[] { "Which monster should replace " + monster.BaseState.Name + "?" });
+               yield return waitUntilDialogueComplete;
+
+
+               EnablePartySelectorUI();
+
+               yield return waitUntilPartyButtonPressed;
+               ResetUISelectors();
+           }
+           else
+           {
+               //run
+           }
+
+           isHandleActionRoutineActive = false;
+       }*/
+
+
+    #region Dialogue Routine and its helpers
     public IEnumerator DialogueRoutine(string[] dialogues)
     {
         isDialogueRoutineActive = true;
@@ -243,26 +373,25 @@ public class BattleSystem : MonoBehaviour
         }
         isDialogueRoutineActive = false;
     }
+    public void printDialogues(string[] dialogues)
+    {
+        StartCoroutine(DialogueRoutine(dialogues));
+    }
     #endregion
-
 }
-
 
 public enum BATTLE
 {
-    inactive,begun,firstChoice,secondChoice,execution,stateUpdate
+    inactive,beginLoop,choosingFirstActionType,firstAction,choosingSecondActionType,secondAction,execution,finished
 }
-
-
-
-public struct ACTION
+public struct ExecuteStageData
 {
-    public enum TYPE
+    public enum ActionType
     {
-        fight,items,party,run
+        move,items,party,run
     }
     
-    public TYPE actionType;
+    public ActionType actionType;
     public bool runAway;
     public MoveBase nextMove;
     public Monster nextMonster;
