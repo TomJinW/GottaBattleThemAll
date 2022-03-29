@@ -130,17 +130,19 @@ public class BattleSystem : MonoBehaviour
         //Party Sellection
         partySelector.SetActive(false);
         isPartyButtonPressed = false;
+        foreach(Transform child in partyButtonMommy)
+            GameObject.Destroy(child.gameObject);
 
         //Run Selection
         /*runSelector.SetActive(false);
         isRunButtonPressed = false;*/
     }
-    public void resetDialogueUIElements()
+    public void ResetDialogueUIElements()
     {
         dialogueText.text = "";
         ResetUISelectors();
     }
-    public void setUnitUIToActiveMonsters()
+    public void SetUnitUIToActiveMonsters()
     {
         //Setting Sprites
         playerUnit.setSprites(p_Monster1.BaseState.Sprite, p_Monster2.BaseState.Sprite);
@@ -182,8 +184,8 @@ public class BattleSystem : MonoBehaviour
         this.o_Monster2 = opMonster2;
 
         //UI setup
-        setUnitUIToActiveMonsters();
-        resetDialogueUIElements();
+        SetUnitUIToActiveMonsters();
+        ResetDialogueUIElements();
 
         //begin battle
         StartCoroutine(BattleRoutine());
@@ -319,11 +321,11 @@ public class BattleSystem : MonoBehaviour
         Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
 
         printDialogues(new string[] { "Choose a monster to replace " + monster.BaseState.Name+"..."});
-        List<Monster> choosableMonsters = CreateHealthyMonsterList();
-        AddMonstersToPartyUI(choosableMonsters);
         yield return waitUntilDialogueRoutineComplete;
 
         EnablePartySelectorUI();
+        List<Monster> choosableMonsters = CreateHealthyMonsterList();
+        AddMonstersToPartyUI(choosableMonsters);
 
         yield return waitUntilPartyButtonPressed;
         ResetUISelectors();
@@ -337,10 +339,14 @@ public class BattleSystem : MonoBehaviour
     }
     private List<Monster> CreateHealthyMonsterList()
     {
+        Monster possibleDuplicate = null;
+        if (status == BATTLE.secondAction && monsterOneData.actionType == ExecuteStageData.ActionType.party)
+            possibleDuplicate = monsterOneData.nextMonster;
+
         List<Monster> healthyList = new List<Monster>();
         
         party.ForEach(delegate (Monster m){
-            if (!m.IsFainted && m!=p_Monster1 && m!=p_Monster2)
+            if (!m.IsFainted && m!=p_Monster1 && m!=p_Monster2 && m!=possibleDuplicate)
                 healthyList.Add(m);
         });
         return healthyList;
@@ -348,7 +354,6 @@ public class BattleSystem : MonoBehaviour
     public void chooseParty(int partyIndex)
     {
         isPartyButtonPressed = true;
-
         chosenMonsterIndex = partyIndex;
     }
     #endregion

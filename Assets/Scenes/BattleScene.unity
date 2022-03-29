@@ -206,6 +206,60 @@ MonoBehaviour:
       hp: 0
     activeHP: 0
     isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
   opMonster1:
     baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
     level: 0
@@ -1965,8 +2019,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2085791468}
+  m_Children: []
   m_Father: {fileID: 432580872}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2443,11 +2496,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 56488685478545699, guid: 346ee22b7f6963b44a3ff2351693cf61, type: 3}
   m_PrefabInstance: {fileID: 56488683502309008}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &2085791468 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-  m_PrefabInstance: {fileID: 4305383857751300101}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2144980791
 GameObject:
   m_ObjectHideFlags: 0
@@ -2753,100 +2801,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15a616f064ed6784db517f85323d0b7a, type: 3}
---- !u!1001 &4305383857751300101
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1681404619}
-    m_Modifications:
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 173.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576745, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4305383857544576750, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
-      propertyPath: m_Name
-      value: MonsterButton
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f0ba3a7c320805e41859287733e9d5f7, type: 3}
