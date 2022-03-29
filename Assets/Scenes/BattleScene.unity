@@ -188,6 +188,24 @@ MonoBehaviour:
       hp: 0
     activeHP: 0
     isFainted: 0
+  - baseState: {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
+  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    level: 0
+    leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    activeHP: 0
+    isFainted: 0
   opMonster1:
     baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
     level: 0

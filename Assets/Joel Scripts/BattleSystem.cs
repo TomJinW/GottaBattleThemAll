@@ -64,6 +64,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] GameObject partySelector;
     [SerializeField] GameObject partyButtonPrefab;
     [SerializeField] Transform partyButtonMommy;
+    private int chosenMonsterIndex = 0;
     private bool isPartyRoutineActive = false;
     private bool isPartyButtonPressed = false;
 
@@ -153,6 +154,21 @@ public class BattleSystem : MonoBehaviour
         playerUnit.setNames(p_Monster1.BaseState.Name, p_Monster2.BaseState.Name);
         opponentUnit.setNames(o_Monster1.BaseState.Name, o_Monster2.BaseState.Name);
     }
+    public void AddMonstersToPartyUI(List<Monster> monsterList)
+    {
+        int counter = 0;
+        foreach (Monster monster in monsterList)
+        {
+            GameObject newMonsterButton = Instantiate(partyButtonPrefab, partyButtonMommy);
+            
+            Button button = newMonsterButton.GetComponent<Button>();
+            button.onClick.AddListener(() => chooseParty(counter++));
+
+            Text buttonText = newMonsterButton.GetComponentInChildren<Text>();
+            buttonText.text = monster.BaseState.Name + " " + (monster.getNormalizedHP() * 100)+"%";
+        }
+    }
+
 
     public void intializeBattle(List<Monster> partyMonsters, Monster opMonster1, Monster opMonster2)
     {
@@ -172,7 +188,6 @@ public class BattleSystem : MonoBehaviour
         //begin battle
         StartCoroutine(BattleRoutine());
     }
-
     
     public IEnumerator BattleRoutine()
     {
@@ -196,7 +211,7 @@ public class BattleSystem : MonoBehaviour
             else if (status == BATTLE.choosingFirstActionType || status == BATTLE.choosingSecondActionType)
             {
                 status++; //choose action of chosen type for first/second monster
-                int actionIndex = (int)monsterOneData.actionType;
+                int actionIndex = (int) (status == BATTLE.firstAction? monsterOneData.actionType : monsterTwoData.actionType);
                 StartCoroutine(branchingActionRoutines[actionIndex]());
                 yield return branchingRoutineYields[actionIndex];
             }
@@ -210,9 +225,7 @@ public class BattleSystem : MonoBehaviour
             {
                 status++; //for now default to battle finished
 
-                //execution complete
-
-                //go to start if battle not over, else exit battle and update state based on battle result
+                //execution complete, go to start if battle not over, else exit battle and update state based on battle result
             }
             else if(status == BATTLE.finished)
             {
@@ -300,7 +313,43 @@ public class BattleSystem : MonoBehaviour
     #region Party Routine and its helpers
     private IEnumerator PartyRoutine()
     {
-        yield return null;
+        isPartyRoutineActive = true;
+        
+        WaitUntil waitUntilPartyButtonPressed = new WaitUntil(() => isPartyButtonPressed);
+        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+
+        printDialogues(new string[] { "Choose a monster to replace " + monster.BaseState.Name+"..."});
+        List<Monster> choosableMonsters = CreateHealthyMonsterList();
+        AddMonstersToPartyUI(choosableMonsters);
+        yield return waitUntilDialogueRoutineComplete;
+
+        EnablePartySelectorUI();
+
+        yield return waitUntilPartyButtonPressed;
+        ResetUISelectors();
+
+        if (status == BATTLE.firstAction)
+            monsterOneData.nextMonster = choosableMonsters[chosenMonsterIndex];
+        else if (status == BATTLE.secondAction)
+            monsterTwoData.nextMonster = choosableMonsters[chosenMonsterIndex];
+
+        isPartyRoutineActive = false;
+    }
+    private List<Monster> CreateHealthyMonsterList()
+    {
+        List<Monster> healthyList = new List<Monster>();
+        
+        party.ForEach(delegate (Monster m){
+            if (!m.IsFainted && m!=p_Monster1 && m!=p_Monster2)
+                healthyList.Add(m);
+        });
+        return healthyList;
+    }
+    public void chooseParty(int partyIndex)
+    {
+        isPartyButtonPressed = true;
+
+        chosenMonsterIndex = partyIndex;
     }
     #endregion
 
