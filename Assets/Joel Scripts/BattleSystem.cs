@@ -32,6 +32,20 @@ public class BattleSystem : MonoBehaviour
         branchingRoutineYields[3] = new WaitUntil(() => !isRunRoutineActive);
 
         waitUntilDialogueRoutineComplete = new WaitUntil(() => !isDialogueRoutineActive);
+
+        ResetExecuteStageData();
+    }
+    private void ResetExecuteStageData()
+    {
+        monsterOneData.actionType = ExecuteStageData.ActionType.invalid;
+        monsterOneData.nextMove = null;
+        monsterOneData.nextMoveTarget = null;
+        monsterOneData.nextMonster = null;
+
+        monsterTwoData.actionType = ExecuteStageData.ActionType.invalid;
+        monsterTwoData.nextMove = null;
+        monsterTwoData.nextMoveTarget = null;
+        monsterTwoData.nextMonster = null;
     }
 
     [Header("Unit Information")]
@@ -262,24 +276,21 @@ public class BattleSystem : MonoBehaviour
                 int actionIndex = (int)(status == BATTLE.firstAction? monsterOneData.actionType : monsterTwoData.actionType);
                 currentRoutineReference = StartCoroutine(branchingActionRoutines[actionIndex]());
                 yield return branchingRoutineYields[actionIndex];
-                   
+
                 //move action requires addition target selection step if it is against single opponent
-                if(actionIndex==System.Array.IndexOf(branchingActionRoutines,MoveRoutine))
-                {
-                    ExecuteStageData monsterData = status == BATTLE.firstAction ? monsterOneData : monsterTwoData;
-                    if (monsterData.nextMove==null || monsterData.nextMove.Target != Target.singOp)
-                        continue;
-                    
-                    currentRoutineReference = StartCoroutine(MoveTargetSelectRoutine());
-                    yield return waitUnitMoveTargetSelectRoutineComplete;
-                }
+                ExecuteStageData monsterData = status == BATTLE.firstAction ? monsterOneData : monsterTwoData;
+                if (actionIndex != System.Array.IndexOf(branchingActionRoutines, MoveRoutine) || monsterData.nextMove == null || monsterData.nextMove.Target != Target.singOp)
+                    continue;
+               
+                currentRoutineReference = StartCoroutine(MoveTargetSelectRoutine());
+                yield return waitUnitMoveTargetSelectRoutineComplete;
             }
             else if (status == BATTLE.secondAction)
             {
                 status++; //second action complete, time to execute!
                 
                 ResetPlayerMonsterColors();
-                //execution routine called here
+                
             }
             else if(status == BATTLE.execution)
             {
@@ -540,6 +551,13 @@ public class BattleSystem : MonoBehaviour
     }
     #endregion
 
+    #region Execute Routine(s) and its helpers
+    private IEnumerator ExecuteRoutine()
+    {
+        yield return null;
+    }
+    #endregion
+
     #region Dialogue Routine and its helpers
     public IEnumerator DialogueRoutine(string[] dialogues)
     {
@@ -621,12 +639,13 @@ public struct ExecuteStageData
 {
     public enum ActionType
     {
-        move,items,party,run
+        move,items,party,run,invalid
     }
     
     public ActionType actionType;
-    public bool runAway;
+    public bool? runAway;
     public MoveBase nextMove;
     public List<Monster> nextMoveTarget;
     public Monster nextMonster;
 }
+
