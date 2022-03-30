@@ -24,8 +24,4 @@ public class MonsterButtonHighlighter : MonoBehaviour,IPointerEnterHandler, IPoi
     {
         myImageToHighLight.color = new Color(ogColor.r, ogColor.g, ogColor.b, ogColor.a);
     }
-    private void OnDestroy()
-    {
-        myImageToHighLight.color = new Color(ogColor.r, ogColor.g, ogColor.b, ogColor.a);
-    }
 }

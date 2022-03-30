@@ -144,7 +144,10 @@ public class BattleSystem : MonoBehaviour
         moveTargetSelector.SetActive(false);
         isTargetSelectButtonPressed = false;
         foreach (Transform child in targetButtonMommy)
+        {
+            child.GetComponent<MonsterButtonHighlighter>().OnPointerExit(null);
             GameObject.Destroy(child.gameObject);
+        }
 
         //Item Selection (Archit code required)
         /*itemSelector.SetActive(false);
