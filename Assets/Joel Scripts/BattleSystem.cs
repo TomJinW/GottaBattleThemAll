@@ -99,7 +99,10 @@ public class BattleSystem : MonoBehaviour
 
     private ExecuteStageData monsterOneData;
     private ExecuteStageData monsterTwoData;
-    
+
+    [Header("Execute Routine Information")]
+    private bool isExecutionRoutineActive = false;
+
     List<Monster> party;
     Monster p_Monster1;
     Monster p_Monster2;
@@ -214,10 +217,11 @@ public class BattleSystem : MonoBehaviour
             GameObject newMonsterButton = Instantiate(buttonPrefab, buttonMommy);
             
             Button button = newMonsterButton.GetComponent<Button>();
-            button.onClick.AddListener(() => funcToCall(counter++));
-
+            int localCounter = counter;
+            button.onClick.AddListener(() => funcToCall(localCounter));
             Text buttonText = newMonsterButton.GetComponentInChildren<Text>();
             buttonText.text = monster.BaseState.Name + " " + (monster.getNormalizedHP() * 100)+"%";
+            counter++;
         }
     }
     #endregion
@@ -288,9 +292,11 @@ public class BattleSystem : MonoBehaviour
             else if (status == BATTLE.secondAction)
             {
                 status++; //second action complete, time to execute!
-                
+
+                WaitUntil waitUntilExecutionRoutineComplete = new WaitUntil(() => !isExecutionRoutineActive);
                 ResetPlayerMonsterColors();
-                
+                StartCoroutine(ExecuteRoutine());
+                yield return waitUntilExecutionRoutineComplete;
             }
             else if(status == BATTLE.execution)
             {
@@ -443,9 +449,9 @@ public class BattleSystem : MonoBehaviour
         ResetUISelectors();
 
         if (status == BATTLE.firstAction)
-            monsterOneData.nextMoveTarget = new List<Monster> {targetMonsters[chosenMonsterIndex] };
+            monsterOneData.nextMoveTarget = new List<Monster> {targetMonsters[chosenTargetIndex] };
         else if (status == BATTLE.secondAction)
-            monsterTwoData.nextMoveTarget = new List<Monster> { targetMonsters[chosenMonsterIndex] };
+            monsterTwoData.nextMoveTarget = new List<Monster> { targetMonsters[chosenTargetIndex] };
 
         isMoveTargetSelectRoutineActive = false;
     }
@@ -526,7 +532,7 @@ public class BattleSystem : MonoBehaviour
     private List<Monster> CreateHealthyMonsterList()
     {
         Monster possibleDuplicate = null;
-        if (status == BATTLE.secondAction && p_Monster1!=null && monsterOneData.actionType == ExecuteStageData.ActionType.party)
+        if (status == BATTLE.secondAction && p_Monster1 != null && monsterOneData.actionType == ExecuteStageData.ActionType.party)
             possibleDuplicate = monsterOneData.nextMonster;
 
         List<Monster> healthyList = new List<Monster>();
@@ -554,7 +560,31 @@ public class BattleSystem : MonoBehaviour
     #region Execute Routine(s) and its helpers
     private IEnumerator ExecuteRoutine()
     {
-        yield return null;
+        isExecutionRoutineActive = true;
+
+        #region Switching Region
+        WaitForSeconds waitAfterSwitching = new WaitForSeconds(0.5f);
+        if(p_Monster1!=null && monsterOneData.actionType==ExecuteStageData.ActionType.party)
+        {
+            printDialogues(new string[] {p_Monster1.BaseState.name+" is being switched to "+monsterOneData.nextMonster.BaseState.name});
+            yield return waitUntilDialogueRoutineComplete;
+
+            p_Monster1 = monsterOneData.nextMonster;
+            SetUnitUIToActiveMonsters();
+            yield return waitAfterSwitching;
+        }
+        if (p_Monster2 != null && monsterTwoData.actionType == ExecuteStageData.ActionType.party)
+        {
+            printDialogues(new string[] { p_Monster2.BaseState.name + " is being switched to " + monsterTwoData.nextMonster.BaseState.name });
+            yield return waitUntilDialogueRoutineComplete;
+
+            p_Monster2 = monsterTwoData.nextMonster;
+            SetUnitUIToActiveMonsters();
+            yield return waitAfterSwitching;
+        }
+        #endregion
+
+        isExecutionRoutineActive = false;
     }
     #endregion
 
