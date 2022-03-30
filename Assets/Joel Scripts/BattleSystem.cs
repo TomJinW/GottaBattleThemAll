@@ -262,12 +262,12 @@ public class BattleSystem : MonoBehaviour
                 int actionIndex = (int)(status == BATTLE.firstAction? monsterOneData.actionType : monsterTwoData.actionType);
                 currentRoutineReference = StartCoroutine(branchingActionRoutines[actionIndex]());
                 yield return branchingRoutineYields[actionIndex];
-
+                   
                 //move action requires addition target selection step if it is against single opponent
                 if(actionIndex==System.Array.IndexOf(branchingActionRoutines,MoveRoutine))
                 {
                     ExecuteStageData monsterData = status == BATTLE.firstAction ? monsterOneData : monsterTwoData;
-                    if (monsterData.nextMove.Target != Target.singOp)
+                    if (monsterData.nextMove==null || monsterData.nextMove.Target != Target.singOp)
                         continue;
                     
                     currentRoutineReference = StartCoroutine(MoveTargetSelectRoutine());
@@ -568,7 +568,7 @@ public class BattleSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !escapeKeyPressed)
+        if (Input.GetKeyDown(KeyCode.Escape) && !escapeKeyPressed && (status>=BATTLE.firstAction && status<=BATTLE.secondAction) && !isDialogueRoutineActive)
             escapeKeyPressed = true;
     }
 
@@ -596,18 +596,17 @@ public class BattleSystem : MonoBehaviour
         {
             yield return wait;
             
-            if (status < BATTLE.firstAction || status > BATTLE.secondAction)
-                continue;
-            
             if(escapeKeyPressed)
             {
+                escapeKeyPressed = false;
+
+                if (status < BATTLE.firstAction || status > BATTLE.secondAction)
+                    continue;
                 yield return waitUntilDialogueRoutineComplete;
                 
                 status-=2; 
                 ResetRoutines();
                 ResetDialogueUIElements();
-
-                escapeKeyPressed = false;
             }
         }
     }
