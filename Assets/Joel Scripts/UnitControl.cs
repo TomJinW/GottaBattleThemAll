@@ -8,52 +8,83 @@ public class UnitControl : MonoBehaviour
     [Header("Pokemon 1 Attributes")]
     [SerializeField] Image pokemonOneSprite;
     [SerializeField] Image pokemonOneHealth;
+    [SerializeField] Image pokemonOneHealthParent;
     [SerializeField] Text pokemonOneName;
 
     [Header("Pokemon 2 Attributes")]
     [SerializeField] Image pokemonTwoSprite;
     [SerializeField] Image pokemonTwoHealth;
+    [SerializeField] Image pokemonTwoHealthParent;
     [SerializeField] Text pokemonTwoName;
 
+    public Image PokemonOneSprite { get => pokemonOneSprite; set => pokemonOneSprite = value; }
+    public Image PokemonTwoSprite { get => pokemonTwoSprite; set => pokemonTwoSprite = value; }
+
     #region setters
-    public void setFirstSprite(Sprite newSprite)
+    public void setAllFirst(Sprite sprite, float normalHP, string name)
+    {
+        resetFirstEmpty();
+        setFirstSprite(sprite);
+        setFirstHP(normalHP);
+        setFirstName(name);
+    }
+    public void setAllSecond(Sprite sprite, float normalHP, string name)
+    {
+        resetSecondEmpty();
+        setSecondSprite(sprite);
+        setSecondHP(normalHP);
+        setSecondName(name);
+    }
+    public void setFirstEmpty()
+    {
+        pokemonOneSprite.color = Color.clear;
+        pokemonOneHealth.color = Color.clear;
+        pokemonOneHealthParent.color = Color.clear;
+        pokemonOneName.text = "";
+    }
+    public void setSecondEmpty()
+    {
+        pokemonTwoSprite.color = Color.clear;
+        pokemonTwoHealth.color = Color.clear;
+        pokemonTwoHealthParent.color = Color.clear;
+        pokemonTwoName.text = "";
+    }
+
+    private void setFirstSprite(Sprite newSprite)
     {
         pokemonOneSprite.sprite = newSprite;
     }
-    public void setSecondSprite(Sprite newSprite)
+    private void setSecondSprite(Sprite newSprite)
     {
         pokemonTwoSprite.sprite = newSprite;
     }
-    public void setSprites(Sprite firstSprite, Sprite secondSprite)
-    {
-        setFirstSprite(firstSprite);
-        setSecondSprite(secondSprite);
-    }
-    public void setFirstHP(float normalizedHP)
+    private void setFirstHP(float normalizedHP)
     {
         pokemonOneHealth.transform.localScale = new Vector2(normalizedHP, 1);
     }
-    public void setSecondHP(float normalizedHP)
+    private void setSecondHP(float normalizedHP)
     {
         pokemonTwoHealth.transform.localScale = new Vector2(normalizedHP, 1);
     }
-    public void setHPs(float normalHPOne, float normalHPTwo)
-    {
-        setFirstHP(normalHPOne);
-        setSecondHP(normalHPTwo);
-    }
-    public void setFirstName(string name)
+    private void setFirstName(string name)
     {
         pokemonOneName.text = name;
     }
-    public void setSecondName(string name)
+    private void setSecondName(string name)
     {
         pokemonTwoName.text = name;
     }
-    public void setNames(string firstName, string secondName)
+    private void resetFirstEmpty()
     {
-        setFirstName(firstName);
-        setSecondName(secondName);
+        pokemonOneSprite.color = Color.white;
+        pokemonOneHealth.color = Color.green;
+        pokemonOneHealthParent.color = Color.white;
+    }
+    private void resetSecondEmpty()
+    {
+        pokemonTwoSprite.color = Color.white;
+        pokemonTwoHealth.color = Color.green;
+        pokemonTwoHealthParent.color = Color.white;
     }
     #endregion
 }

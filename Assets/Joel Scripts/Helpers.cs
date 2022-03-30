@@ -25,5 +25,5 @@ public enum Type
 
 public enum Target
 {
-    self, ally, singOp, doubOp, all
+    self, singOp, doubOp, all
 }

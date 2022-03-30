@@ -55,8 +55,8 @@ public class Monster
     public void takeDamage(int damage)
     {
         activeHP -= damage;
-        activeHP = Mathf.Max(damage, 0);
-        IsFainted = activeHP == 0 ? true : false;
+        activeHP = Mathf.Max(activeHP, 0);
+        isFainted = activeHP == 0 ? true : false;
     }
     public void revive()
     {

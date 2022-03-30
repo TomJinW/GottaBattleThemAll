@@ -437,9 +437,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pokemonOneSprite: {fileID: 56488684314215253}
   pokemonOneHealth: {fileID: 56488684531863056}
+  pokemonOneHealthParent: {fileID: 56488684094011604}
   pokemonOneName: {fileID: 56488683977660721}
   pokemonTwoSprite: {fileID: 966412501622072537}
   pokemonTwoHealth: {fileID: 6433420831777645928}
+  pokemonTwoHealthParent: {fileID: 6433420832213373868}
   pokemonTwoName: {fileID: 63847480256497325}
 --- !u!1 &63847478776968550
 GameObject:
