@@ -10,8 +10,8 @@ public class BattleSystem : MonoBehaviour
     
     [Header("Loop Information")]
     [SerializeField] private BATTLE status;
+    [SerializeField] private bool winState = false;
 
-    
     private delegate IEnumerator BranchedAction();
     private BranchedAction[] branchingActionRoutines;
     private WaitUntil[] branchingRoutineYields;
@@ -108,6 +108,8 @@ public class BattleSystem : MonoBehaviour
     Monster p_Monster2;
     Monster o_Monster1;
     Monster o_Monster2;
+    Monster o_Monster1_persistent;
+    Monster o_Monster2_persistent;
     #endregion
 
     #region UI Functions
@@ -235,8 +237,8 @@ public class BattleSystem : MonoBehaviour
         p_Monster2 = partyMonsters[1];
 
         //opponent setup
-        this.o_Monster1 = opMonster1;
-        this.o_Monster2 = opMonster2;
+        this.o_Monster1 = this.o_Monster1_persistent = opMonster1;
+        this.o_Monster2 = this.o_Monster1_persistent = opMonster2;
 
         //UI setup
         SetUnitUIToActiveMonsters();
@@ -264,7 +266,16 @@ public class BattleSystem : MonoBehaviour
             {
                 status++; //choose first/second monsters action type
                 if ((status == BATTLE.choosingFirstActionType && p_Monster1 == null) || (status == BATTLE.choosingSecondActionType && p_Monster2 == null))
+                {
+                    if(CreateHealthyMonsterList().Count!=0)
+                    {
+                        if(status==BATTLE.choosingFirstActionType)
+                            monsterOneData.actionType = ExecuteStageData.ActionType.party;
+                        else if(status==BATTLE.choosingSecondActionType)
+                            monsterTwoData.actionType = ExecuteStageData.ActionType.party;
+                    }
                     continue;
+                }
 
                 SetActiveMonsterColor();
                 currentRoutineReference = StartCoroutine(ActionRoutine());
@@ -273,7 +284,8 @@ public class BattleSystem : MonoBehaviour
             else if (status == BATTLE.choosingFirstActionType || status == BATTLE.choosingSecondActionType)
             {
                 status++; //choose action of chosen type for first/second monster
-                if ((status == BATTLE.firstAction && p_Monster1 == null) || (status == BATTLE.secondAction && p_Monster2 == null))
+                if ((status == BATTLE.firstAction && p_Monster1 == null && monsterOneData.actionType == ExecuteStageData.ActionType.invalid) 
+                        || (status == BATTLE.secondAction && p_Monster2 == null && monsterTwoData.actionType == ExecuteStageData.ActionType.invalid))
                     continue;
 
                 SetActiveMonsterColor();
@@ -295,17 +307,37 @@ public class BattleSystem : MonoBehaviour
 
                 WaitUntil waitUntilExecutionRoutineComplete = new WaitUntil(() => !isExecutionRoutineActive);
                 ResetPlayerMonsterColors();
+
                 StartCoroutine(ExecuteRoutine());
                 yield return waitUntilExecutionRoutineComplete;
             }
             else if(status == BATTLE.execution)
             {
-                status++; //for now default to battle finished
+                //execution complete, check status of battle
+                
+                ResetExecuteStageData(); //reset data collected for previous execution stage
 
-                //execution complete, go to start if battle not over, else exit battle and update state based on battle result
+                if(isBattleWon())
+                {
+                    status++;
+                    winState = true;
+                    continue;
+                }
+                if(isBattleLost())
+                {
+                    status++;
+                    winState = false;
+                    continue;
+                }
+                
+                //Battle not over yet, keep going!
+                status = BATTLE.beginLoop;
             }
             else if(status == BATTLE.finished)
             {
+                //battle win or loss stuff
+
+                //reseting battle system
                 isBattleActive = false;
                 status = BATTLE.inactive;
             }
@@ -317,10 +349,20 @@ public class BattleSystem : MonoBehaviour
         ResetPlayerMonsterColors();
 
         Image monsterImage=null;
-        if (status==BATTLE.firstAction || status == BATTLE.choosingFirstActionType)
-            monsterImage = playerUnit.PokemonOneSprite;
+        if (status == BATTLE.firstAction || status == BATTLE.choosingFirstActionType)
+        {
+            if (p_Monster1 != null)
+                monsterImage = playerUnit.PokemonOneSprite;
+            else
+                return;
+        }
         if (status == BATTLE.secondAction || status == BATTLE.choosingSecondActionType)
-            monsterImage = playerUnit.PokemonTwoSprite;
+        {
+            if (p_Monster2 != null)
+                monsterImage = playerUnit.PokemonTwoSprite;
+            else
+                return;
+        }
 
         Color ogColor = monsterImage.color;
         monsterImage.color = new Color(1, ogColor.g/2, ogColor.b/2);
@@ -512,7 +554,11 @@ public class BattleSystem : MonoBehaviour
         WaitUntil waitUntilPartyButtonPressed = new WaitUntil(() => isPartyButtonPressed);
         Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
 
-        printDialogues(new string[] { "Choose a monster to replace " + monster.BaseState.Name+"..."});
+        if(monster!=null)
+            printDialogues(new string[] { "Choose a monster to replace " + monster.BaseState.Name+"..."});
+        else
+            printDialogues(new string[] { "Choose a monster to send out..."});
+
         yield return waitUntilDialogueRoutineComplete;
 
         EnablePartySelectorUI();
@@ -532,7 +578,7 @@ public class BattleSystem : MonoBehaviour
     private List<Monster> CreateHealthyMonsterList()
     {
         Monster possibleDuplicate = null;
-        if (status == BATTLE.secondAction && p_Monster1 != null && monsterOneData.actionType == ExecuteStageData.ActionType.party)
+        if (status == BATTLE.secondAction && monsterOneData.actionType == ExecuteStageData.ActionType.party)
             possibleDuplicate = monsterOneData.nextMonster;
 
         List<Monster> healthyList = new List<Monster>();
@@ -564,18 +610,26 @@ public class BattleSystem : MonoBehaviour
 
         #region Switching Region
         WaitForSeconds waitAfterSwitching = new WaitForSeconds(0.5f);
-        if(p_Monster1!=null && monsterOneData.actionType==ExecuteStageData.ActionType.party)
+        if(monsterOneData.actionType==ExecuteStageData.ActionType.party)
         {
-            printDialogues(new string[] {p_Monster1.BaseState.name+" is being switched to "+monsterOneData.nextMonster.BaseState.name});
+            if(p_Monster1 != null)
+                printDialogues(new string[] {p_Monster1.BaseState.name+" is being switched to "+monsterOneData.nextMonster.BaseState.name});
+            else
+                printDialogues(new string[] {"Sending out " + monsterOneData.nextMonster.BaseState.name });
+
             yield return waitUntilDialogueRoutineComplete;
 
             p_Monster1 = monsterOneData.nextMonster;
             SetUnitUIToActiveMonsters();
             yield return waitAfterSwitching;
         }
-        if (p_Monster2 != null && monsterTwoData.actionType == ExecuteStageData.ActionType.party)
+        if (monsterTwoData.actionType == ExecuteStageData.ActionType.party)
         {
-            printDialogues(new string[] { p_Monster2.BaseState.name + " is being switched to " + monsterTwoData.nextMonster.BaseState.name });
+            if (p_Monster2 != null)
+                printDialogues(new string[] { p_Monster2.BaseState.name + " is being switched to " + monsterTwoData.nextMonster.BaseState.name });
+            else
+                printDialogues(new string[] { "Sending out " + monsterTwoData.nextMonster.BaseState.name });
+            
             yield return waitUntilDialogueRoutineComplete;
 
             p_Monster2 = monsterTwoData.nextMonster;
@@ -584,7 +638,26 @@ public class BattleSystem : MonoBehaviour
         }
         #endregion
 
+        #region Move's region
+        
+        #endregion
+
         isExecutionRoutineActive = false;
+    }
+    private bool isBattleWon()
+    {
+        if (o_Monster1 == null && o_Monster2 == null)
+            return true;
+        return false;
+    }
+    private bool isBattleLost()
+    {
+        foreach(Monster monster in party)
+        {
+            if (!monster.IsFainted)
+                return false;
+        }
+        return true;
     }
     #endregion
 
