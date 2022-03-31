@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Marshtic
+  m_Name: Flaredit
   m_EditorClassIdentifier: 
-  name: Marshtic
-  sprite: {fileID: 21300000, guid: cc7156d1eae11f64da09149a5f06a275, type: 3}
+  name: Flaredit
+  sprite: {fileID: 21300000, guid: c647c8668ddf58a4393aa143b97fa167, type: 3}
   type: 0
   baseStats:
     attack: 5
-    defense: 7
-    speed: 4
+    defense: 5
+    speed: 5
     hp: 20
   statsChangePerLevel:
-    attack: 1
-    defense: 2
+    attack: 2
+    defense: 1
     speed: 1
-    hp: 2
+    hp: 1
   moves:
-  - {fileID: 11400000, guid: d0f682bccfd793a4cb4e5d4dbed39ad4, type: 2}
-  - {fileID: 11400000, guid: 567e033af992dd045b81e162cb334c4e, type: 2}
-  - {fileID: 11400000, guid: 2174ec9a92432384d9671a92395c7012, type: 2}
-  - {fileID: 11400000, guid: 772cdce1707b6fa4ab33226efe73f243, type: 2}
+  - {fileID: 11400000, guid: 9565f49d094d174409fe4de2fc7c6583, type: 2}
+  - {fileID: 11400000, guid: b161718a0de02e2469d685ee7ab49ff7, type: 2}
+  - {fileID: 11400000, guid: 93caa4a09c31e7140b44a9df26fe7e59, type: 2}
+  - {fileID: 11400000, guid: 90bbadc729978ef46bc7c1ee813b31d0, type: 2}

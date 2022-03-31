@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1229014411183394468}
   - component: {fileID: 1229014411183394474}
   - component: {fileID: 1229014411183394473}
-  - component: {fileID: 1079191881950426510}
   - component: {fileID: 8030342950738733401}
+  - component: {fileID: 9080054638125009102}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Monster
@@ -121,25 +121,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.021511829, y: -0.26890478}
   m_Size: {x: 1.27536, y: 0.46219105}
   m_Direction: 1
---- !u!114 &1079191881950426510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229014411183394469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ec75bdc086434c3bb7deb42b3ab1ceb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 8030342950738733401}
-  dexID: 0
-  listIndex: 0
-  idleTimeInSecondsMin: 2
-  idleTimeInSecondsMax: 4
-  movementSpeed: 1
-  step: 0.5
 --- !u!50 &8030342950738733401
 Rigidbody2D:
   serializedVersion: 4
@@ -161,3 +142,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &9080054638125009102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229014411183394469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec75bdc086434c3bb7deb42b3ab1ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 8030342950738733401}
+  dexID: 0
+  listIndex: 0
+  idleTimeInSecondsMin: 2
+  idleTimeInSecondsMax: 4
+  movementSpeed: 1
+  step: 0.5
+  allowWandering: 1

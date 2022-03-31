@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Marshtic
+  m_Name: Avaceon
   m_EditorClassIdentifier: 
-  name: Marshtic
-  sprite: {fileID: 21300000, guid: cc7156d1eae11f64da09149a5f06a275, type: 3}
-  type: 0
+  name: Avaceon
+  sprite: {fileID: 21300000, guid: 8cd4d805c15068a49b72923e8596fb1b, type: 3}
+  type: 2
   baseStats:
-    attack: 5
-    defense: 7
-    speed: 4
-    hp: 20
+    attack: 3
+    defense: 5
+    speed: 2
+    hp: 15
   statsChangePerLevel:
     attack: 1
     defense: 2
     speed: 1
-    hp: 2
+    hp: 1
   moves:
-  - {fileID: 11400000, guid: d0f682bccfd793a4cb4e5d4dbed39ad4, type: 2}
+  - {fileID: 11400000, guid: c4d20a51097969f409668bd6d76281cd, type: 2}
+  - {fileID: 11400000, guid: 3b570e97b8c3d5d4698b1c31c52c2353, type: 2}
+  - {fileID: 11400000, guid: 31d2ac5abb9924f4bbca1f6ea4e59bf3, type: 2}
   - {fileID: 11400000, guid: 567e033af992dd045b81e162cb334c4e, type: 2}
-  - {fileID: 11400000, guid: 2174ec9a92432384d9671a92395c7012, type: 2}
-  - {fileID: 11400000, guid: 772cdce1707b6fa4ab33226efe73f243, type: 2}

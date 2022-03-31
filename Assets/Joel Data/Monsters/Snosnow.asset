@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Charmcargo
+  m_Name: Snosnow
   m_EditorClassIdentifier: 
-  name: Charmcargo
-  sprite: {fileID: 21300000, guid: d81daa1333a65ee439388be4995f64b2, type: 3}
-  type: 0
+  name: Snosnow
+  sprite: {fileID: 21300000, guid: ee7bfe85e0b55254cbc074a6df5615c3, type: 3}
+  type: 2
   baseStats:
-    attack: 5
-    defense: 10
+    attack: 10
+    defense: 5
     speed: 3
-    hp: 20
+    hp: 15
   statsChangePerLevel:
     attack: 1
-    defense: 2
+    defense: 1
     speed: 1
     hp: 2
   moves:
-  - {fileID: 11400000, guid: 9565f49d094d174409fe4de2fc7c6583, type: 2}
-  - {fileID: 11400000, guid: 9fb2e72029d195244927aec73e6744c0, type: 2}
-  - {fileID: 11400000, guid: 572911a07a18045428f00e3bf391c6ec, type: 2}
-  - {fileID: 11400000, guid: 358a3a2cc8a3d1e4b9dc5efe7efa0882, type: 2}
+  - {fileID: 11400000, guid: c4d20a51097969f409668bd6d76281cd, type: 2}
+  - {fileID: 11400000, guid: d640aee53bd673242be6dcf32a0d1b92, type: 2}
+  - {fileID: 11400000, guid: 3ff66b2a3d135194c90488cb2a6299e4, type: 2}
+  - {fileID: 11400000, guid: 31d2ac5abb9924f4bbca1f6ea4e59bf3, type: 2}

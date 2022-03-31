@@ -119,6 +119,7 @@ public class PlayerCharacter : MonoBehaviour
 
     IEnumerator StartBattle(Collision2D collision)
     {
+        Debug.Log("Start Battle routine called!");
         if (transitionAnimator != null)
         {
             Internals.transitionName = transtionAnimationName;
@@ -126,10 +127,10 @@ public class PlayerCharacter : MonoBehaviour
         }
         Internals.allowMapMovement = false;
         yield return new WaitForSeconds(transtionTime);
-        //Internals.teleported = true;
-        //Internals.teleportedLocation = transform.position;
-        //Internals.lastBattleSceneName = SceneManager.GetActiveScene().name;
-        //Internals.lastBattleMonsterIndex = collision.gameObject.GetComponent<Monster>().listIndex;
+        Internals.teleported = true;
+        Internals.teleportedLocation = transform.position;
+        Internals.lastBattleSceneName = SceneManager.GetActiveScene().name;
+        Internals.lastBattleMonsterIndex = collision.gameObject.GetComponent<Monster>().listIndex;
         //SceneManager.LoadScene(destinationSceneName);
 
         if (battleCanvas != null) {

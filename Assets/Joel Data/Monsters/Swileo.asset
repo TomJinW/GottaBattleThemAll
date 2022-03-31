@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Marshtic
+  m_Name: Swileo
   m_EditorClassIdentifier: 
-  name: Marshtic
-  sprite: {fileID: 21300000, guid: cc7156d1eae11f64da09149a5f06a275, type: 3}
-  type: 0
+  name: Swileo
+  sprite: {fileID: 21300000, guid: 421e1ba22ad72304b8e6718e2017f204, type: 3}
+  type: 2
   baseStats:
     attack: 5
-    defense: 7
-    speed: 4
-    hp: 20
+    defense: 4
+    speed: 3
+    hp: 10
   statsChangePerLevel:
     attack: 1
-    defense: 2
+    defense: 1
     speed: 1
-    hp: 2
+    hp: 1
   moves:
-  - {fileID: 11400000, guid: d0f682bccfd793a4cb4e5d4dbed39ad4, type: 2}
-  - {fileID: 11400000, guid: 567e033af992dd045b81e162cb334c4e, type: 2}
+  - {fileID: 11400000, guid: 55875771decc07247bbddf868a43cfd8, type: 2}
   - {fileID: 11400000, guid: 2174ec9a92432384d9671a92395c7012, type: 2}
-  - {fileID: 11400000, guid: 772cdce1707b6fa4ab33226efe73f243, type: 2}
+  - {fileID: 11400000, guid: 65d4d681f3194f84c9fd238d3fd0b5e9, type: 2}
+  - {fileID: 11400000, guid: e4902ff0d393b9b45bc42472cfc40644, type: 2}

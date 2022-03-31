@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: FishBlob
+  m_Name: Windos
   m_EditorClassIdentifier: 
-  name: FishBlob
-  sprite: {fileID: 21300000, guid: fe643cfa403e22049af2df43f46493d5, type: 3}
+  name: Windos
+  sprite: {fileID: 21300000, guid: 69c6c0d32273f184d8297efaaa5f8ab9, type: 3}
   type: 1
   baseStats:
-    attack: 5
-    defense: 10
-    speed: 2
-    hp: 3
+    attack: 4
+    defense: 7
+    speed: 10
+    hp: 20
   statsChangePerLevel:
-    attack: 1
+    attack: 2
     defense: 1
     speed: 1
-    hp: 1
+    hp: 2
   moves:
-  - {fileID: 11400000, guid: 9565f49d094d174409fe4de2fc7c6583, type: 2}
-  - {fileID: 11400000, guid: 572911a07a18045428f00e3bf391c6ec, type: 2}
-  - {fileID: 11400000, guid: 6e109291d6e86694699bbd00a37336c3, type: 2}
   - {fileID: 11400000, guid: d0f682bccfd793a4cb4e5d4dbed39ad4, type: 2}
+  - {fileID: 11400000, guid: 5dacbe92263b69b41b29087be6ba397d, type: 2}
+  - {fileID: 11400000, guid: 211235411a9192140a4b7feb430c26e6, type: 2}
+  - {fileID: 11400000, guid: 31d2ac5abb9924f4bbca1f6ea4e59bf3, type: 2}

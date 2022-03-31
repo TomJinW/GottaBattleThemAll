@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3524e29804f29ca4a983cb25e79765e6, type: 3}
-  m_Name: WaterPulse
+  m_Name: Leer
   m_EditorClassIdentifier: 
-  name: Water Pulse
-  type: 1
+  name: Leer
+  type: 0
   target: 1
-  baseDamage: 6
-  critProb: 15
+  baseDamage: 0
+  critProb: 0
   statEffects:
     attack: 0
-    defense: 0
+    defense: -1
     speed: 0
     hp: 0

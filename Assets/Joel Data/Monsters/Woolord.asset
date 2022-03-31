@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Birdo
+  m_Name: Woolord
   m_EditorClassIdentifier: 
-  name: Birdo
-  sprite: {fileID: 21300000, guid: 643acc759120adb4eb2eb9e21ebff608, type: 3}
-  type: 2
+  name: Woolord
+  sprite: {fileID: 21300000, guid: 30c107451b9f5194a942bdebbc5ba175, type: 3}
+  type: 1
   baseStats:
-    attack: 10
-    defense: 10
-    speed: 10
-    hp: 10
+    attack: 5
+    defense: 5
+    speed: 5
+    hp: 30
   statsChangePerLevel:
-    attack: 2
-    defense: 3
+    attack: 1
+    defense: 1
     speed: 1
     hp: 3
   moves:
-  - {fileID: 11400000, guid: 9565f49d094d174409fe4de2fc7c6583, type: 2}
-  - {fileID: 11400000, guid: 572911a07a18045428f00e3bf391c6ec, type: 2}
-  - {fileID: 11400000, guid: 6e109291d6e86694699bbd00a37336c3, type: 2}
   - {fileID: 11400000, guid: d0f682bccfd793a4cb4e5d4dbed39ad4, type: 2}
+  - {fileID: 11400000, guid: 3c1e4bc504acaea479b9ce2f74c94624, type: 2}
+  - {fileID: 11400000, guid: 2174ec9a92432384d9671a92395c7012, type: 2}
+  - {fileID: 11400000, guid: cc94a6616ecedc542ae2e7ddecc6e3b1, type: 2}

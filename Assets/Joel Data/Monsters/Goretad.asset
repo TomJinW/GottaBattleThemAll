@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Charmcargo
+  m_Name: Goretad
   m_EditorClassIdentifier: 
-  name: Charmcargo
-  sprite: {fileID: 21300000, guid: d81daa1333a65ee439388be4995f64b2, type: 3}
-  type: 0
+  name: Goretad
+  sprite: {fileID: 21300000, guid: fe643cfa403e22049af2df43f46493d5, type: 3}
+  type: 1
   baseStats:
-    attack: 5
-    defense: 10
-    speed: 3
-    hp: 20
+    attack: 4
+    defense: 4
+    speed: 5
+    hp: 10
   statsChangePerLevel:
     attack: 1
-    defense: 2
+    defense: 1
     speed: 1
     hp: 2
   moves:
-  - {fileID: 11400000, guid: 9565f49d094d174409fe4de2fc7c6583, type: 2}
-  - {fileID: 11400000, guid: 9fb2e72029d195244927aec73e6744c0, type: 2}
+  - {fileID: 11400000, guid: 65d4d681f3194f84c9fd238d3fd0b5e9, type: 2}
+  - {fileID: 11400000, guid: d640aee53bd673242be6dcf32a0d1b92, type: 2}
+  - {fileID: 11400000, guid: 211235411a9192140a4b7feb430c26e6, type: 2}
   - {fileID: 11400000, guid: 572911a07a18045428f00e3bf391c6ec, type: 2}
-  - {fileID: 11400000, guid: 358a3a2cc8a3d1e4b9dc5efe7efa0882, type: 2}

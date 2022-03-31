@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d478a81eeb097d4f97577b7f05868b7, type: 3}
-  m_Name: Charmcargo
+  m_Name: Growroar
   m_EditorClassIdentifier: 
-  name: Charmcargo
-  sprite: {fileID: 21300000, guid: d81daa1333a65ee439388be4995f64b2, type: 3}
+  name: Growroar
+  sprite: {fileID: 21300000, guid: cab104b733bbbe7499a3e064c61180ea, type: 3}
   type: 0
   baseStats:
-    attack: 5
-    defense: 10
-    speed: 3
-    hp: 20
+    attack: 8
+    defense: 4
+    speed: 9
+    hp: 10
   statsChangePerLevel:
-    attack: 1
-    defense: 2
-    speed: 1
-    hp: 2
+    attack: 2
+    defense: 1
+    speed: 2
+    hp: 1
   moves:
   - {fileID: 11400000, guid: 9565f49d094d174409fe4de2fc7c6583, type: 2}
-  - {fileID: 11400000, guid: 9fb2e72029d195244927aec73e6744c0, type: 2}
-  - {fileID: 11400000, guid: 572911a07a18045428f00e3bf391c6ec, type: 2}
-  - {fileID: 11400000, guid: 358a3a2cc8a3d1e4b9dc5efe7efa0882, type: 2}
+  - {fileID: 11400000, guid: 211235411a9192140a4b7feb430c26e6, type: 2}
+  - {fileID: 11400000, guid: 31d2ac5abb9924f4bbca1f6ea4e59bf3, type: 2}
+  - {fileID: 11400000, guid: f878634c5dc719d498a1de0248cd8831, type: 2}

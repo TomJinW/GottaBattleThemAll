@@ -81679,23 +81679,27 @@ PrefabInstance:
       objectReference: {fileID: 2135684878}
     - target: {fileID: 4735470092704624424, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}
       propertyPath: areaMosnterBase.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4735470092704624424, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}
       propertyPath: areaMosnterBase.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 439e48539776eff49ade47474ab70637, type: 2}
+      objectReference: {fileID: 11400000, guid: e064cf0e4926f418a83be01e7eec1eaf, type: 2}
     - target: {fileID: 4735470092704624424, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}
       propertyPath: areaMosnterBase.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
+      objectReference: {fileID: 11400000, guid: 91b0dcd4c794e454ab92b66a0caae1d6, type: 2}
     - target: {fileID: 4735470092704624424, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}
       propertyPath: areaMosnterBase.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 32e3c029ce1f12249894cd259519de99, type: 2}
+      objectReference: {fileID: 11400000, guid: 5529bff45393648948712a5281889bbe, type: 2}
     - target: {fileID: 4735470092704624424, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}
       propertyPath: areaMosnterBase.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+      objectReference: {fileID: 11400000, guid: 20a18c65f3bf84e6286bd46ad3afc6ca, type: 2}
+    - target: {fileID: 4735470092704624424, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}
+      propertyPath: areaMosnterBase.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 39c9719aff8a04e359bdfb1437d36cfd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87e6f91350e7448498395d3ef9e2eab0, type: 3}

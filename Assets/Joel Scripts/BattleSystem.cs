@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BattleSystem : MonoBehaviour
 {
@@ -234,6 +235,7 @@ public class BattleSystem : MonoBehaviour
     #region Main Battle Routine and it's helpers
     public void intializeBattle(List<MonsterUnit> partyMonsters, MonsterUnit opMonster1, MonsterUnit opMonster2)
     {
+        Debug.Log("Battle Initialised");
         //player setup
         this.party = partyMonsters;
         p_Monster1 = partyMonsters[0];
@@ -353,10 +355,12 @@ public class BattleSystem : MonoBehaviour
                     printDialogues(new string[] { "Battle lost..", "Better luck next time hunter!" });
                     yield return waitUntilDialogueComplete;
                 }
-                //reseting battle system
-                ResetBattleSystem();
+                isBattleActive = false;
             }
         }
+        
+        //reseting battle system
+        ResetBattleSystem();
     }
     private void SetActiveMonsterColor()
     {
@@ -390,18 +394,20 @@ public class BattleSystem : MonoBehaviour
         foreach (MonsterUnit m in party)
         {
             m.ResetMonster();
-            m.levelUp();
+            if(winState)
+                m.levelUp();
         }
         
         winState = false;
         status = BATTLE.inactive;
         isBattleActive = false;
 
-        battleCanvas.SetActive(false);
-        Internals.allowMapMovement = true;
-        Internals.allowBattle = true;
-        Internals.battleStarted = false;
-    
+        /*battleCanvas.SetActive(false);
+          Internals.allowMapMovement = true;
+          Internals.allowBattle = true;
+          Internals.battleStarted = false;*/
+
+        SceneManager.LoadScene(Internals.lastBattleSceneName);
     }
     #endregion
 
@@ -631,7 +637,15 @@ public class BattleSystem : MonoBehaviour
     #region Run Routine and its helpers
     private IEnumerator RunRoutine()
     {
-        yield return null;
+        isRunRoutineActive = true;
+
+        printDialogues(new string[] { "You decided to run away!" });
+        yield return waitUntilDialogueRoutineComplete;
+
+        winState = false;
+        isBattleActive = false;
+        
+        isRunRoutineActive = false;
     }
     #endregion
 
