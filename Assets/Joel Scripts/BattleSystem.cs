@@ -657,12 +657,29 @@ public class BattleSystem : MonoBehaviour
             {
                 if (monsterOneData.nextMove.Target == Target.self)
                     yield return StartCoroutine(selfMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
-                else
-                    yield return StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
 
-                postMoveStateUpdate();
+                else
+                    yield return StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, monsterOneData.nextMoveTarget, playerUnit.PokemonOneSprite));
             }
 
+            if (m == p_Monster2 && monsterTwoData.actionType == ExecuteStageData.ActionType.move)
+            {
+                if (monsterTwoData.nextMove.Target == Target.self)
+                    yield return StartCoroutine(selfMoveRoutine(p_Monster2, monsterTwoData.nextMove, playerUnit.PokemonTwoSprite));
+                else
+                    yield return StartCoroutine(otherMoveRoutine(p_Monster2, monsterTwoData.nextMove, monsterTwoData.nextMoveTarget, playerUnit.PokemonTwoSprite));
+            }
+            if(m== o_Monster1 || m == o_Monster2)
+            {
+                MoveBase opMove = m.BaseState.Moves[Random.Range(0,4)];
+                if(opMove.Target == Target.self)
+                    yield return StartCoroutine(selfMoveRoutine(m, opMove, FindTargetImage(m),true));
+                else
+                {
+                    List<Monster> targetForOpponents = CreateTargetListForOpponentMonster(m,opMove);
+                    yield return StartCoroutine(otherMoveRoutine(m, opMove, targetForOpponents, FindTargetImage(m),true));
+                }
+            }
         }
         #endregion
 
@@ -683,21 +700,93 @@ public class BattleSystem : MonoBehaviour
         }
         return true;
     }
-    private IEnumerator selfMoveRoutine(Monster self, MoveBase move, Image selfImage)
+    private IEnumerator selfMoveRoutine(Monster self, MoveBase move, Image selfImage,bool isOpMonster=false)
     {
+        WaitForSeconds waitAfterMove = new WaitForSeconds(0.5f);
         Color ogColor = selfImage.color;
         selfImage.color = new Color(ogColor.r / 2, 1, ogColor.b / 2);
         
         self.takeDamage(move.BaseDamage);
         self.takeTemporaryStatEffects(move.StatEffects);
-        printDialogues(new string[]{self.BaseState.name+" used "+move.name});
+        if(!isOpMonster)
+            printDialogues(new string[]{self.BaseState.name+" used "+move.name});
+        else
+            printDialogues(new string[] {"Opposing "+self.BaseState.name + " used " + move.name});
         yield return waitUntilDialogueRoutineComplete;
 
         selfImage.color = ogColor;
+        postMoveStateUpdate();
+        
+        yield return waitAfterMove;
     }
-    private IEnumerator otherMoveRoutine(Monster self, MoveBase move, Image selfImage)
+    private IEnumerator otherMoveRoutine(Monster self, MoveBase move, List<Monster> targets, Image selfImage,bool isOpMonster=false)
     {
-        yield return null;
+        WaitForSeconds waitBetweenTargets = new WaitForSeconds(0.5f);
+        Color ogColor = selfImage.color;
+        
+        //opponent vars
+        Color targetColor;
+        Image targetImage;
+
+        foreach (Monster target in targets)
+        {
+            if (target == null)
+                continue;
+            
+            targetImage = FindTargetImage(target);
+            targetColor = targetImage.color;
+
+            selfImage.color = new Color(1, ogColor.g/2, ogColor.b / 2);
+            targetImage.color = new Color(targetColor.r, targetColor.g, targetColor.b, targetColor.a / 2);
+            
+            target.takeDamage(move.BaseDamage);
+            target.takeTemporaryStatEffects(move.StatEffects);
+
+            if(!isOpMonster)
+                printDialogues(new string[] { self.BaseState.name + " used " + move.name + " on "+target.BaseState.Name});
+            else
+                printDialogues(new string[] {"Foe "+self.BaseState.name + " used " + move.name + " on " + target.BaseState.Name });
+            yield return waitUntilDialogueRoutineComplete;
+
+            selfImage.color = ogColor;
+            targetImage.color = targetColor;
+
+            postMoveStateUpdate();
+            yield return waitBetweenTargets;
+        }
+    }
+    private Image FindTargetImage(Monster m)
+    {
+        if (m == p_Monster1)
+            return playerUnit.PokemonOneSprite;
+        if (m == p_Monster2)
+            return playerUnit.PokemonTwoSprite;
+
+        if (m == o_Monster1)
+            return opponentUnit.PokemonOneSprite;
+        if (m == o_Monster2)
+            return opponentUnit.PokemonTwoSprite;
+
+        return null;
+    }
+    private List<Monster> CreateTargetListForOpponentMonster(Monster currentOp, MoveBase opMove)
+    {
+        List<Monster> targets = new List<Monster>();
+        
+        if(opMove.Target==Target.singOp)
+            targets.Add(Random.Range(0, 2) == 0 ? p_Monster1 : p_Monster2);
+        else if(opMove.Target==Target.doubOp)
+        {
+            targets.Add(p_Monster1);
+            targets.Add(p_Monster2);
+        }
+        else if(opMove.Target==Target.all)
+        {
+            targets.Add(p_Monster1);
+            targets.Add(p_Monster2);
+            targets.Add(currentOp == o_Monster1 ? o_Monster1 : o_Monster2);
+        }
+        return targets;
     }
     private void postMoveStateUpdate()
     {
