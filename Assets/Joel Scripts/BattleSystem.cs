@@ -336,13 +336,22 @@ public class BattleSystem : MonoBehaviour
             else if(status == BATTLE.finished)
             {
                 //battle win or loss stuff
-
+                if(winState)
+                {
+                    party.Add(o_Monster1_persistent);
+                    party.Add(o_Monster2_persistent);
+                    printDialogues(new string[] {"The battle has been won!","The new monsters have been added to your party." });
+                    yield return waitUntilDialogueComplete;
+                }
+                else
+                {
+                    printDialogues(new string[] { "Battle lost..", "Better luck next time hunter!" });
+                    yield return waitUntilDialogueComplete;
+                }
                 //reseting battle system
-                isBattleActive = false;
-                status = BATTLE.inactive;
+                ResetBattleSystem();
             }
         }
-        Debug.Log("Battle Over!");
     }
     private void SetActiveMonsterColor()
     {
@@ -370,6 +379,18 @@ public class BattleSystem : MonoBehaviour
     private void ResetPlayerMonsterColors()
     {
         SetUnitUIToActiveMonsters();
+    }
+    private void ResetBattleSystem()
+    {
+        foreach (Monster m in party)
+        {
+            m.ResetMonster();
+            m.levelUp();
+        }
+        
+        winState = false;
+        status = BATTLE.inactive;
+        isBattleActive = false;
     }
     #endregion
 
