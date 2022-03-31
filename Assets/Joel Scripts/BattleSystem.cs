@@ -238,7 +238,7 @@ public class BattleSystem : MonoBehaviour
 
         //opponent setup
         this.o_Monster1 = this.o_Monster1_persistent = opMonster1;
-        this.o_Monster2 = this.o_Monster1_persistent = opMonster2;
+        this.o_Monster2 = this.o_Monster2_persistent = opMonster2;
 
         //UI setup
         SetUnitUIToActiveMonsters();
@@ -340,6 +340,8 @@ public class BattleSystem : MonoBehaviour
                 {
                     party.Add(o_Monster1_persistent);
                     party.Add(o_Monster2_persistent);
+                    Debug.Log(o_Monster1_persistent.BaseState.Name);
+                    Debug.Log(o_Monster2_persistent.BaseState.Name);
                     printDialogues(new string[] {"The battle has been won!","The new monsters have been added to your party." });
                     yield return waitUntilDialogueComplete;
                 }
@@ -660,6 +662,9 @@ public class BattleSystem : MonoBehaviour
         #endregion
 
         #region Move's region
+        WaitUntil waitUntilSelfMoveRoutineComplete = new WaitUntil(() => !isSelfMoveRoutineActive);
+        WaitUntil waitUntilOtherMoveRoutineComplete = new WaitUntil(() => !isOtherMoveRoutineActive);
+        
         List<Monster> inBattleMonster = new List<Monster>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };
         inBattleMonster.Sort(delegate (Monster m1, Monster m2)
         {
@@ -667,40 +672,43 @@ public class BattleSystem : MonoBehaviour
                 return -1;
             if (m2 == null)
                 return 1;
-            return m1.LeveledStats.speed - m2.LeveledStats.speed;
+            return m2.LeveledStats.speed - m1.LeveledStats.speed;
         }); //sorted by speed
         foreach(Monster m in inBattleMonster)
         {
             if (m == null)
                 continue;
             
-            if(m==p_Monster1 && monsterOneData.actionType==ExecuteStageData.ActionType.move)
+            else if(m==p_Monster1 && monsterOneData.actionType==ExecuteStageData.ActionType.move)
             {
                 if (monsterOneData.nextMove.Target == Target.self)
-                    yield return StartCoroutine(selfMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
+                    StartCoroutine(selfMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
 
                 else
-                    yield return StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, monsterOneData.nextMoveTarget, playerUnit.PokemonOneSprite));
+                    StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, monsterOneData.nextMoveTarget, playerUnit.PokemonOneSprite));
             }
 
-            if (m == p_Monster2 && monsterTwoData.actionType == ExecuteStageData.ActionType.move)
+            else if (m == p_Monster2 && monsterTwoData.actionType == ExecuteStageData.ActionType.move)
             {
                 if (monsterTwoData.nextMove.Target == Target.self)
-                    yield return StartCoroutine(selfMoveRoutine(p_Monster2, monsterTwoData.nextMove, playerUnit.PokemonTwoSprite));
+                    StartCoroutine(selfMoveRoutine(p_Monster2, monsterTwoData.nextMove, playerUnit.PokemonTwoSprite));
                 else
-                    yield return StartCoroutine(otherMoveRoutine(p_Monster2, monsterTwoData.nextMove, monsterTwoData.nextMoveTarget, playerUnit.PokemonTwoSprite));
+                    StartCoroutine(otherMoveRoutine(p_Monster2, monsterTwoData.nextMove, monsterTwoData.nextMoveTarget, playerUnit.PokemonTwoSprite));
             }
-            if(m== o_Monster1 || m == o_Monster2)
+            else if(m== o_Monster1 || m == o_Monster2)
             {
                 MoveBase opMove = m.BaseState.Moves[Random.Range(0,4)];
                 if(opMove.Target == Target.self)
-                    yield return StartCoroutine(selfMoveRoutine(m, opMove, FindTargetImage(m),true));
+                    StartCoroutine(selfMoveRoutine(m, opMove, FindTargetImage(m),true));
                 else
                 {
                     List<Monster> targetForOpponents = CreateTargetListForOpponentMonster(m,opMove);
-                    yield return StartCoroutine(otherMoveRoutine(m, opMove, targetForOpponents, FindTargetImage(m),true));
+                    StartCoroutine(otherMoveRoutine(m, opMove, targetForOpponents, FindTargetImage(m),true));
                 }
             }
+            
+            yield return waitUntilSelfMoveRoutineComplete;
+            yield return waitUntilOtherMoveRoutineComplete;
         }
         #endregion
 
@@ -721,8 +729,11 @@ public class BattleSystem : MonoBehaviour
         }
         return true;
     }
+    private bool isSelfMoveRoutineActive = false;
     private IEnumerator selfMoveRoutine(Monster self, MoveBase move, Image selfImage,bool isOpMonster=false)
     {
+        isSelfMoveRoutineActive = true;
+
         WaitForSeconds waitAfterMove = new WaitForSeconds(0.5f);
         Color ogColor = selfImage.color;
         selfImage.color = new Color(ogColor.r / 2, 1, ogColor.b / 2);
@@ -739,21 +750,27 @@ public class BattleSystem : MonoBehaviour
         postMoveStateUpdate();
         
         yield return waitAfterMove;
+
+        isSelfMoveRoutineActive = false;
     }
+   
+    private bool isOtherMoveRoutineActive = false;
     private IEnumerator otherMoveRoutine(Monster self, MoveBase move, List<Monster> targets, Image selfImage,bool isOpMonster=false)
     {
+        isOtherMoveRoutineActive = true;
+
         WaitForSeconds waitBetweenTargets = new WaitForSeconds(0.5f);
         Color ogColor = selfImage.color;
-        
+
         //opponent vars
         Color targetColor;
         Image targetImage;
 
         foreach (Monster target in targets)
         {
-            if (target == null)
+            if (target.IsFainted)
                 continue;
-            
+
             targetImage = FindTargetImage(target);
             targetColor = targetImage.color;
 
@@ -775,6 +792,8 @@ public class BattleSystem : MonoBehaviour
             postMoveStateUpdate();
             yield return waitBetweenTargets;
         }
+
+        isOtherMoveRoutineActive = false;
     }
     private Image FindTargetImage(Monster m)
     {

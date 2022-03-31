@@ -166,11 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0463d7b2667231b44927f88489c69ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allMonsterInGame:
-  - {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
-  - {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
-  - {fileID: 11400000, guid: 32e3c029ce1f12249894cd259519de99, type: 2}
-  - {fileID: 11400000, guid: 439e48539776eff49ade47474ab70637, type: 2}
+  allMonsterInGame: []
   partyMonsters:
   - baseState: {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
     level: 0
@@ -179,38 +175,7 @@ MonoBehaviour:
       defense: 0
       speed: 0
       hp: 0
-    activeHP: 0
-    isFainted: 0
-  - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
-    level: 0
-    leveledStats:
-      attack: 0
-      defense: 0
-      speed: 0
-      hp: 0
-    activeHP: 0
-    isFainted: 0
-  - baseState: {fileID: 11400000, guid: 32e3c029ce1f12249894cd259519de99, type: 2}
-    level: 0
-    leveledStats:
-      attack: 0
-      defense: 0
-      speed: 0
-      hp: 0
-    activeHP: 0
-    isFainted: 0
-  - baseState: {fileID: 11400000, guid: 439e48539776eff49ade47474ab70637, type: 2}
-    level: 0
-    leveledStats:
-      attack: 0
-      defense: 0
-      speed: 0
-      hp: 0
-    activeHP: 0
-    isFainted: 0
-  - baseState: {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
-    level: 0
-    leveledStats:
+    maxStats:
       attack: 0
       defense: 0
       speed: 0
@@ -220,6 +185,11 @@ MonoBehaviour:
   - baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
     level: 0
     leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    maxStats:
       attack: 0
       defense: 0
       speed: 0
@@ -227,9 +197,14 @@ MonoBehaviour:
     activeHP: 0
     isFainted: 0
   opMonster1:
-    baseState: {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+    baseState: {fileID: 11400000, guid: 439e48539776eff49ade47474ab70637, type: 2}
     level: 0
     leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    maxStats:
       attack: 0
       defense: 0
       speed: 0
@@ -237,9 +212,14 @@ MonoBehaviour:
     activeHP: 0
     isFainted: 0
   opMonster2:
-    baseState: {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
+    baseState: {fileID: 11400000, guid: 32e3c029ce1f12249894cd259519de99, type: 2}
     level: 0
     leveledStats:
+      attack: 0
+      defense: 0
+      speed: 0
+      hp: 0
+    maxStats:
       attack: 0
       defense: 0
       speed: 0
@@ -1965,11 +1945,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
+  winState: 0
   playerUnit: {fileID: 411087020}
   opponentUnit: {fileID: 1434236763}
   dialogueText: {fileID: 1452527434}
-  letterPrintSpeed: 30
-  pauseBetweenDialogues: 2
+  letterPrintSpeed: 60
+  pauseBetweenDialogues: 0.5
   actionSelector: {fileID: 885464638}
   moveSelector: {fileID: 1876334134}
   moveButtonText:
@@ -1992,6 +1973,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1201036395}
     m_Modifications:
+    - target: {fileID: 56488684314215251, guid: 346ee22b7f6963b44a3ff2351693cf61, type: 3}
+      propertyPath: m_Name
+      value: O_P1Image
+      objectReference: {fileID: 0}
     - target: {fileID: 56488684314215252, guid: 346ee22b7f6963b44a3ff2351693cf61, type: 3}
       propertyPath: m_LocalScale.x
       value: -1
@@ -2091,6 +2076,10 @@ PrefabInstance:
     - target: {fileID: 966412501622072536, guid: 346ee22b7f6963b44a3ff2351693cf61, type: 3}
       propertyPath: m_LocalScale.x
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966412501622072543, guid: 346ee22b7f6963b44a3ff2351693cf61, type: 3}
+      propertyPath: m_Name
+      value: O_P2Image
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 346ee22b7f6963b44a3ff2351693cf61, type: 3}
