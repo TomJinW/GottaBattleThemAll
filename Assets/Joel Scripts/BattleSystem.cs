@@ -103,13 +103,13 @@ public class BattleSystem : MonoBehaviour
     [Header("Execute Routine Information")]
     private bool isExecutionRoutineActive = false;
 
-    List<Monster> party;
-    Monster p_Monster1;
-    Monster p_Monster2;
-    Monster o_Monster1;
-    Monster o_Monster2;
-    Monster o_Monster1_persistent;
-    Monster o_Monster2_persistent;
+    List<MonsterUnit> party;
+    MonsterUnit p_Monster1;
+    MonsterUnit p_Monster2;
+    MonsterUnit o_Monster1;
+    MonsterUnit o_Monster2;
+    MonsterUnit o_Monster1_persistent;
+    MonsterUnit o_Monster2_persistent;
     #endregion
 
     #region UI Functions
@@ -211,10 +211,10 @@ public class BattleSystem : MonoBehaviour
         else
             opponentUnit.setSecondEmpty();
     }
-    private void AddMonstersToScrollableUI(List<Monster> monsterList,GameObject buttonPrefab, Transform buttonMommy,buttonFunc funcToCall)
+    private void AddMonstersToScrollableUI(List<MonsterUnit> monsterList,GameObject buttonPrefab, Transform buttonMommy,buttonFunc funcToCall)
     {
         int counter = 0;
-        foreach (Monster monster in monsterList)
+        foreach (MonsterUnit monster in monsterList)
         {
             GameObject newMonsterButton = Instantiate(buttonPrefab, buttonMommy);
             
@@ -229,7 +229,7 @@ public class BattleSystem : MonoBehaviour
     #endregion
 
     #region Main Battle Routine and it's helpers
-    public void intializeBattle(List<Monster> partyMonsters, Monster opMonster1, Monster opMonster2)
+    public void intializeBattle(List<MonsterUnit> partyMonsters, MonsterUnit opMonster1, MonsterUnit opMonster2)
     {
         //player setup
         this.party = partyMonsters;
@@ -384,7 +384,7 @@ public class BattleSystem : MonoBehaviour
     }
     private void ResetBattleSystem()
     {
-        foreach (Monster m in party)
+        foreach (MonsterUnit m in party)
         {
             m.ResetMonster();
             m.levelUp();
@@ -403,7 +403,7 @@ public class BattleSystem : MonoBehaviour
 
         WaitUntil waitUntilActionButtonPressed = new WaitUntil(() => isActionButtonPressed);
         WaitUntil waitUntilDialogueComplete = new WaitUntil(() => !isDialogueRoutineActive);
-        Monster monster = status == BATTLE.choosingFirstActionType ? p_Monster1 : (status == BATTLE.choosingSecondActionType ? p_Monster2 : null);
+        MonsterUnit monster = status == BATTLE.choosingFirstActionType ? p_Monster1 : (status == BATTLE.choosingSecondActionType ? p_Monster2 : null);
        
         printDialogues(new string[] { "What will " + monster.BaseState.Name + " do?" });
         yield return waitUntilDialogueComplete;
@@ -431,7 +431,7 @@ public class BattleSystem : MonoBehaviour
         isMoveRoutineActive = true;
         
         WaitUntil waitUntilMoveButtonPressed = new WaitUntil(() => isMoveButtonPressed);
-        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
 
         printDialogues(new string[] { "Which attack will " + monster.BaseState.Name + " use?" });
         yield return waitUntilDialogueRoutineComplete;
@@ -449,7 +449,7 @@ public class BattleSystem : MonoBehaviour
 
         isMoveRoutineActive = false;
     }
-    private void assignMovesToMoveButtons(Monster monster)
+    private void assignMovesToMoveButtons(MonsterUnit monster)
     {
         MoveBase[] monsterMoves = monster.BaseState.Moves;
 
@@ -467,8 +467,8 @@ public class BattleSystem : MonoBehaviour
     }
     private void assignTargetToMove(ref ExecuteStageData monsterData)
     {
-        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
-        List<Monster> targetMonsterList = new List<Monster>();
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        List<MonsterUnit> targetMonsterList = new List<MonsterUnit>();
 
         if (monsterData.nextMove.Target==Target.self)
             targetMonsterList.Add(monster);
@@ -506,7 +506,7 @@ public class BattleSystem : MonoBehaviour
         yield return waitUntilDialogueRoutineComplete;
 
         EnableTargetSelectorUI();
-        List<Monster> targetMonsters = CreateTargetMonsterList();
+        List<MonsterUnit> targetMonsters = CreateTargetMonsterList();
         AddMonstersToScrollableUI(targetMonsters, targetButtonPrefab, targetButtonMommy,chooseTarget);
         MakeTargetButtonsHighlightMonster();
         
@@ -514,16 +514,16 @@ public class BattleSystem : MonoBehaviour
         ResetUISelectors();
 
         if (status == BATTLE.firstAction)
-            monsterOneData.nextMoveTarget = new List<Monster> {targetMonsters[chosenTargetIndex] };
+            monsterOneData.nextMoveTarget = new List<MonsterUnit> {targetMonsters[chosenTargetIndex] };
         else if (status == BATTLE.secondAction)
-            monsterTwoData.nextMoveTarget = new List<Monster> { targetMonsters[chosenTargetIndex] };
+            monsterTwoData.nextMoveTarget = new List<MonsterUnit> { targetMonsters[chosenTargetIndex] };
 
         isMoveTargetSelectRoutineActive = false;
     }
-    public List<Monster> CreateTargetMonsterList()
+    public List<MonsterUnit> CreateTargetMonsterList()
     {
-        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
-        List<Monster> targetMonsters = new List<Monster>();
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        List<MonsterUnit> targetMonsters = new List<MonsterUnit>();
 
         if (o_Monster1 != null)
             targetMonsters.Add(o_Monster1);
@@ -540,8 +540,8 @@ public class BattleSystem : MonoBehaviour
     }
     public void MakeTargetButtonsHighlightMonster()
     {
-        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
-        Monster[] activeMonster = { o_Monster1, o_Monster2, p_Monster1, p_Monster2 };
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        MonsterUnit[] activeMonster = { o_Monster1, o_Monster2, p_Monster1, p_Monster2 };
         Image[] UI_Images = { opponentUnit.PokemonOneSprite, opponentUnit.PokemonTwoSprite, playerUnit.PokemonOneSprite, playerUnit.PokemonTwoSprite };
         int activeMonsterCounter = 0;
         
@@ -575,7 +575,7 @@ public class BattleSystem : MonoBehaviour
         isPartyRoutineActive = true;
         
         WaitUntil waitUntilPartyButtonPressed = new WaitUntil(() => isPartyButtonPressed);
-        Monster monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
 
         if(monster!=null)
             printDialogues(new string[] { "Choose a monster to replace " + monster.BaseState.Name+"..."});
@@ -585,7 +585,7 @@ public class BattleSystem : MonoBehaviour
         yield return waitUntilDialogueRoutineComplete;
 
         EnablePartySelectorUI();
-        List<Monster> choosableMonsters = CreateHealthyMonsterList();
+        List<MonsterUnit> choosableMonsters = CreateHealthyMonsterList();
         AddMonstersToScrollableUI(choosableMonsters,partyButtonPrefab,partyButtonMommy,chooseParty);
 
         yield return waitUntilPartyButtonPressed;
@@ -598,15 +598,15 @@ public class BattleSystem : MonoBehaviour
 
         isPartyRoutineActive = false;
     }
-    private List<Monster> CreateHealthyMonsterList()
+    private List<MonsterUnit> CreateHealthyMonsterList()
     {
-        Monster possibleDuplicate = null;
+        MonsterUnit possibleDuplicate = null;
         if (status == BATTLE.secondAction && monsterOneData.actionType == ExecuteStageData.ActionType.party)
             possibleDuplicate = monsterOneData.nextMonster;
 
-        List<Monster> healthyList = new List<Monster>();
+        List<MonsterUnit> healthyList = new List<MonsterUnit>();
         
-        party.ForEach(delegate (Monster m){
+        party.ForEach(delegate (MonsterUnit m){
             if (!m.IsFainted && m!=p_Monster1 && m!=p_Monster2 && m!=possibleDuplicate)
                 healthyList.Add(m);
         });
@@ -665,8 +665,8 @@ public class BattleSystem : MonoBehaviour
         WaitUntil waitUntilSelfMoveRoutineComplete = new WaitUntil(() => !isSelfMoveRoutineActive);
         WaitUntil waitUntilOtherMoveRoutineComplete = new WaitUntil(() => !isOtherMoveRoutineActive);
         
-        List<Monster> inBattleMonster = new List<Monster>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };
-        inBattleMonster.Sort(delegate (Monster m1, Monster m2)
+        List<MonsterUnit> inBattleMonster = new List<MonsterUnit>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };
+        inBattleMonster.Sort(delegate (MonsterUnit m1, MonsterUnit m2)
         {
            if(m1==null)
                 return -1;
@@ -674,7 +674,7 @@ public class BattleSystem : MonoBehaviour
                 return 1;
             return m2.LeveledStats.speed - m1.LeveledStats.speed;
         }); //sorted by speed
-        foreach(Monster m in inBattleMonster)
+        foreach(MonsterUnit m in inBattleMonster)
         {
             if (m == null)
                 continue;
@@ -702,7 +702,7 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(selfMoveRoutine(m, opMove, FindTargetImage(m),true));
                 else
                 {
-                    List<Monster> targetForOpponents = CreateTargetListForOpponentMonster(m,opMove);
+                    List<MonsterUnit> targetForOpponents = CreateTargetListForOpponentMonster(m,opMove);
                     StartCoroutine(otherMoveRoutine(m, opMove, targetForOpponents, FindTargetImage(m),true));
                 }
             }
@@ -722,7 +722,7 @@ public class BattleSystem : MonoBehaviour
     }
     private bool isBattleLost()
     {
-        foreach(Monster monster in party)
+        foreach(MonsterUnit monster in party)
         {
             if (!monster.IsFainted)
                 return false;
@@ -730,7 +730,7 @@ public class BattleSystem : MonoBehaviour
         return true;
     }
     private bool isSelfMoveRoutineActive = false;
-    private IEnumerator selfMoveRoutine(Monster self, MoveBase move, Image selfImage,bool isOpMonster=false)
+    private IEnumerator selfMoveRoutine(MonsterUnit self, MoveBase move, Image selfImage,bool isOpMonster=false)
     {
         isSelfMoveRoutineActive = true;
 
@@ -755,7 +755,7 @@ public class BattleSystem : MonoBehaviour
     }
    
     private bool isOtherMoveRoutineActive = false;
-    private IEnumerator otherMoveRoutine(Monster self, MoveBase move, List<Monster> targets, Image selfImage,bool isOpMonster=false)
+    private IEnumerator otherMoveRoutine(MonsterUnit self, MoveBase move, List<MonsterUnit> targets, Image selfImage,bool isOpMonster=false)
     {
         isOtherMoveRoutineActive = true;
 
@@ -766,7 +766,7 @@ public class BattleSystem : MonoBehaviour
         Color targetColor;
         Image targetImage;
 
-        foreach (Monster target in targets)
+        foreach (MonsterUnit target in targets)
         {
             if (target.IsFainted)
                 continue;
@@ -795,7 +795,7 @@ public class BattleSystem : MonoBehaviour
 
         isOtherMoveRoutineActive = false;
     }
-    private Image FindTargetImage(Monster m)
+    private Image FindTargetImage(MonsterUnit m)
     {
         if (m == p_Monster1)
             return playerUnit.PokemonOneSprite;
@@ -809,9 +809,9 @@ public class BattleSystem : MonoBehaviour
 
         return null;
     }
-    private List<Monster> CreateTargetListForOpponentMonster(Monster currentOp, MoveBase opMove)
+    private List<MonsterUnit> CreateTargetListForOpponentMonster(MonsterUnit currentOp, MoveBase opMove)
     {
-        List<Monster> targets = new List<Monster>();
+        List<MonsterUnit> targets = new List<MonsterUnit>();
         
         if(opMove.Target==Target.singOp)
             targets.Add(Random.Range(0, 2) == 0 ? p_Monster1 : p_Monster2);
@@ -930,7 +930,7 @@ public struct ExecuteStageData
     public ActionType actionType;
     public bool? runAway;
     public MoveBase nextMove;
-    public List<Monster> nextMoveTarget;
-    public Monster nextMonster;
+    public List<MonsterUnit> nextMoveTarget;
+    public MonsterUnit nextMonster;
 }
 

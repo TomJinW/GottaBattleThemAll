@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     public List<MonsterBase> allMonsterInGame;
 
     [Header("Battle Information")]
-    public List<Monster> partyMonsters;
-    public Monster opMonster1;
-    public Monster opMonster2;
+    public List<MonsterUnit> partyMonsters;
+    public MonsterUnit opMonster1;
+    public MonsterUnit opMonster2;
     public BattleSystem battleSystem;
 
     private void Start()
     {
-        foreach (Monster monster in partyMonsters)
+        foreach (MonsterUnit monster in partyMonsters)
             monster.Init();
         opMonster1.Init();
         opMonster2.Init();

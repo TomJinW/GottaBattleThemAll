@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Monster
+public class MonsterUnit
 {
     //fixed state
     [SerializeField] private MonsterBase baseState;
