@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Persistent Information")]
-    public List<MonsterBase> allMonsterInGame;
+    //[Header("Persistent Information")]
+    //public List<MonsterBase> allMonsterInGame;
 
     [Header("Battle Information")]
     public List<MonsterUnit> partyMonsters;
@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (MonsterUnit monster in partyMonsters)
-            monster.Init();
+        partyMonsters = Internals.partyMonsters;
+
         opMonster1.Init();
         opMonster2.Init();
 

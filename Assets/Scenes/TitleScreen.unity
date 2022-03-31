@@ -1232,6 +1232,11 @@ MonoBehaviour:
   anchor: {fileID: 100274481}
   currentSelectedOption: 0
   optionMenu: {fileID: 797398914}
+  monsterBase:
+  - {fileID: 11400000, guid: 0a609bd10438b78469dad3c35a1e59b4, type: 2}
+  - {fileID: 11400000, guid: b11753e77d4d19b4ab9267a90fb61d27, type: 2}
+  - {fileID: 11400000, guid: 439e48539776eff49ade47474ab70637, type: 2}
+  - {fileID: 11400000, guid: 32e3c029ce1f12249894cd259519de99, type: 2}
 --- !u!1001 &4966699408102631110
 PrefabInstance:
   m_ObjectHideFlags: 0

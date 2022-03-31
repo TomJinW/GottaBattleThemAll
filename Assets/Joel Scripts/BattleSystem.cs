@@ -15,6 +15,9 @@ public class BattleSystem : MonoBehaviour
     private delegate IEnumerator BranchedAction();
     private BranchedAction[] branchingActionRoutines;
     private WaitUntil[] branchingRoutineYields;
+
+    [SerializeField] GameObject battleCanvas;
+
     private void Start()
     {
         status = BATTLE.inactive;
@@ -33,7 +36,7 @@ public class BattleSystem : MonoBehaviour
 
         waitUntilDialogueRoutineComplete = new WaitUntil(() => !isDialogueRoutineActive);
 
-        ResetExecuteStageData();
+        ResetExecuteStageData(); 
     }
     private void ResetExecuteStageData()
     {
@@ -393,6 +396,12 @@ public class BattleSystem : MonoBehaviour
         winState = false;
         status = BATTLE.inactive;
         isBattleActive = false;
+
+        battleCanvas.SetActive(false);
+        Internals.allowMapMovement = true;
+        Internals.allowBattle = true;
+        Internals.battleStarted = false;
+    
     }
     #endregion
 

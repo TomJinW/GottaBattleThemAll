@@ -10,6 +10,10 @@ public class TitleScreenController : MonoBehaviour
     public TitleScreenOptions currentSelectedOption = TitleScreenOptions.Start;
     private bool optionMenuActivated = false;
     public GameObject optionMenu;
+
+    [SerializeField]
+    public MonsterBase[] monsterBase;
+
     public void setOption()
     {
         anchor.transform.localPosition = Constants.titleScreenOptionPositions[(int)currentSelectedOption];
@@ -43,7 +47,7 @@ public class TitleScreenController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Internals.generateNewPartyMonsters(monsterBase);
     }
 
     // Update is called once per frame

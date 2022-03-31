@@ -45,6 +45,25 @@ static class Internals
     public static string transitionName = "CrossFade";
     public static bool allowMapMovement = true;
 
+
+    public static List<MonsterUnit> partyMonsters;
+
+    public static void generateNewPartyMonsters(MonsterBase[] monsterBase) {
+        partyMonsters = null;
+        partyMonsters = new List<MonsterUnit>();
+
+        MonsterUnit monster1 = new MonsterUnit();
+        monster1.BaseState = monsterBase[0];
+        monster1.Level = 1;
+        monster1.Init();
+        MonsterUnit monster2 = new MonsterUnit();
+        monster2.BaseState = monsterBase[1];
+        monster2.Level = 1;
+        monster2.Init();
+        partyMonsters.Add(monster1);
+        partyMonsters.Add(monster2);
+    }
+
 }
 
 static class Constants
