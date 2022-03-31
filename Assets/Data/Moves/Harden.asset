@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Harden
   type: 3
   target: 0
-  baseDamage: 0
+  baseDamage: 5
   critProb: 0
   statEffects:
     attack: 0

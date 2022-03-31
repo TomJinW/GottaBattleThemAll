@@ -14,32 +14,40 @@ public class Monster
     //variable state
     [SerializeField] private int level;
     [SerializeField] private Stats leveledStats;
-    
+    [SerializeField] private Stats maxStats;
+
     //battle variable state
     [SerializeField] private int activeHP;
     [SerializeField] private bool isFainted;
 
+    //public properties
     public MonsterBase BaseState { get => baseState; set => baseState = value; }
-    public int Level { get => level;}
+    public int Level { get => level; set => level = value; }
+    
+    //private properties
+    public bool IsFainted { get => isFainted;}
     public Stats LeveledStats { get => leveledStats;}
-    public bool IsFainted { get => isFainted; set => isFainted = value; }
-
+    
     public void Init()
     {
         level = Mathf.Clamp(Level, MIN_LEVEL, MAX_LEVEL);
-        leveledStats = BaseState.BaseStats;
+        
+        leveledStats = baseState.BaseStats;
+        for (int i = 2; i <= Level; ++i)
+            leveledStats += BaseState.StatsChangePerLevel;
 
-        for(int i = 2;i<=Level;++i)
-            levelUp();
+        maxStats = baseState.BaseStats;
+        for (int i = 2; i <= MAX_LEVEL; ++i)
+            maxStats += BaseState.StatsChangePerLevel;
 
-        activeHP = LeveledStats.hp;
-        IsFainted = false;
+        activeHP = leveledStats.hp;
+        isFainted = false;
     }
     
     #region getters
     public float getNormalizedHP()
     {
-        return activeHP / LeveledStats.hp;
+        return (float)activeHP / LeveledStats.hp;
     }
     #endregion
 
@@ -58,10 +66,17 @@ public class Monster
         activeHP = Mathf.Max(activeHP, 0);
         isFainted = activeHP == 0 ? true : false;
     }
-    public void revive()
+    public void takeTemporaryStatEffects(Stats effects)
     {
-        activeHP = LeveledStats.hp;
-        IsFainted = false;
+        leveledStats += effects;
+        leveledStats.attack = Mathf.Clamp(leveledStats.attack,baseState.BaseStats.attack, maxStats.attack);
+        leveledStats.defense = Mathf.Clamp(leveledStats.defense, baseState.BaseStats.defense, maxStats.defense);
+        leveledStats.speed = Mathf.Clamp(leveledStats.speed, baseState.BaseStats.speed, maxStats.speed);
+        leveledStats.hp = Mathf.Clamp(leveledStats.hp, baseState.BaseStats.hp, maxStats.hp);
+    }
+    public void ResetMonster()
+    {
+        Init();
     }
     #endregion
 }

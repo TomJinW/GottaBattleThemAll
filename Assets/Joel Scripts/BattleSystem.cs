@@ -639,7 +639,31 @@ public class BattleSystem : MonoBehaviour
         #endregion
 
         #region Move's region
-        
+        List<Monster> inBattleMonster = new List<Monster>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };
+        inBattleMonster.Sort(delegate (Monster m1, Monster m2)
+        {
+           if(m1==null)
+                return -1;
+            if (m2 == null)
+                return 1;
+            return m1.LeveledStats.speed - m2.LeveledStats.speed;
+        }); //sorted by speed
+        foreach(Monster m in inBattleMonster)
+        {
+            if (m == null)
+                continue;
+            
+            if(m==p_Monster1 && monsterOneData.actionType==ExecuteStageData.ActionType.move)
+            {
+                if (monsterOneData.nextMove.Target == Target.self)
+                    yield return StartCoroutine(selfMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
+                else
+                    yield return StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
+
+                postMoveStateUpdate();
+            }
+
+        }
         #endregion
 
         isExecutionRoutineActive = false;
@@ -658,6 +682,35 @@ public class BattleSystem : MonoBehaviour
                 return false;
         }
         return true;
+    }
+    private IEnumerator selfMoveRoutine(Monster self, MoveBase move, Image selfImage)
+    {
+        Color ogColor = selfImage.color;
+        selfImage.color = new Color(ogColor.r / 2, 1, ogColor.b / 2);
+        
+        self.takeDamage(move.BaseDamage);
+        self.takeTemporaryStatEffects(move.StatEffects);
+        printDialogues(new string[]{self.BaseState.name+" used "+move.name});
+        yield return waitUntilDialogueRoutineComplete;
+
+        selfImage.color = ogColor;
+    }
+    private IEnumerator otherMoveRoutine(Monster self, MoveBase move, Image selfImage)
+    {
+        yield return null;
+    }
+    private void postMoveStateUpdate()
+    {
+        if (p_Monster1 != null && p_Monster1.IsFainted)
+            p_Monster1 = null;
+        if (p_Monster2 != null && p_Monster2.IsFainted)
+            p_Monster2 = null;
+        if (o_Monster1 != null && o_Monster1.IsFainted)
+            o_Monster1 = null;
+        if (o_Monster2 != null && o_Monster2.IsFainted)
+            o_Monster2 = null;
+        
+        SetUnitUIToActiveMonsters();
     }
     #endregion
 
