@@ -1,0 +1,70 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Windos 100",
+        "Marshtic 100"
+    ],
+    "actionData": [
+        "Foe Windos used AerialAce on Marshtic",
+        "Marshtic used WaterPulse on Marshtic",
+        "Opposing Marshtic used Recover",
+        "Charmcargo used Flamethrower on Windos"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 70",
+        "Windos 70",
+        "Marshtic 100"
+    ],
+    "actionData": [
+        "Foe Windos used WaterPulse on Charmcargo",
+        "Marshtic used WaterPulse on Windos",
+        "Opposing Marshtic used Recover",
+        "Charmcargo used Flamethrower on Windos"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 70",
+        "Marshtic 70",
+        "Windos 10",
+        "Marshtic 100"
+    ],
+    "actionData": [
+        "Foe Windos used WaterPulse on Charmcargo",
+        "Marshtic used WaterPulse on Windos",
+        "Foe Windos has fainted",
+        "Foe Marshtic used Hyponsis on Marshtic",
+        "Charmcargo used Flamethrower on Marshtic"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 40",
+        "Marshtic 70",
+        "Fainted",
+        "Marshtic 70"
+    ],
+    "actionData": [
+        "Marshtic used WaterPulse on Marshtic",
+        "Foe Marshtic used WaterPulse on Charmcargo",
+        "Charmcargo used Flamethrower on Marshtic"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 10",
+        "Marshtic 40",
+        "Fainted",
+        "Marshtic 40"
+    ],
+    "actionData": [
+        "Marshtic used WaterPulse on Marshtic",
+        "Foe Marshtic used WaterPulse on Marshtic",
+        "Charmcargo used Flamethrower on Marshtic",
+        "Foe Marshtic has fainted"
+    ]
+}

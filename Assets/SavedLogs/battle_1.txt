@@ -1,0 +1,72 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Muboach 100",
+        "Woolord 100"
+    ],
+    "actionData": [
+        "Opposing Woolord used Amnesia",
+        "Marshtic used WaterPulse on Woolord",
+        "Charmcargo used Flamethrower on Muboach",
+        "Foe Muboach used Sludge on Charmcargo",
+        "Foe Muboach used Sludge on Marshtic"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 80",
+        "Marshtic 80",
+        "Muboach 70",
+        "Woolord 80"
+    ],
+    "actionData": [
+        "Foe Woolord used WaterPulse on Marshtic",
+        "Marshtic used WaterPulse on Woolord",
+        "Charmcargo used Flamethrower on Muboach",
+        "Opposing Muboach used Harden"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 80",
+        "Marshtic 50",
+        "Muboach 40",
+        "Woolord 60"
+    ],
+    "actionData": [
+        "Foe Woolord used WaterPulse on Charmcargo",
+        "Marshtic used WaterPulse on Woolord",
+        "Charmcargo used Flamethrower on Muboach",
+        "Foe Muboach used WaterGun on Marshtic"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 50",
+        "Marshtic 30",
+        "Muboach 10",
+        "Woolord 40"
+    ],
+    "actionData": [
+        "Opposing Woolord used Amnesia",
+        "Marshtic used Recover",
+        "Charmcargo used Flamethrower on Woolord",
+        "Opposing Muboach used Harden"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 50",
+        "Marshtic 80",
+        "Muboach 10",
+        "Woolord 20"
+    ],
+    "actionData": [
+        "Opposing Woolord used Amnesia",
+        "Marshtic used WaterPulse on Muboach",
+        "Foe Muboach has fainted",
+        "Charmcargo used Flamethrower on Woolord",
+        "Foe Woolord has fainted"
+    ]
+}

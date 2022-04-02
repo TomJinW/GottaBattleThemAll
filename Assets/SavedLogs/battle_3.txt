@@ -1,0 +1,56 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Windos 100",
+        "Goretad 100"
+    ],
+    "actionData": [
+        "Charmcargo is being switched to Windos",
+        "Marshtic is being switched to Marshtic",
+        "Foe Windos used Bite on Windos",
+        "Foe Goretad used Absorb on Windos"
+    ]
+}
+{
+    "monsterData": [
+        "Windos 59.09091",
+        "Marshtic 100",
+        "Windos 100",
+        "Goretad 100"
+    ],
+    "actionData": [
+        "Windos used AerialAce on Windos",
+        "Foe Windos used AerialAce on Windos",
+        "Marshtic used WaterPulse on Windos",
+        "Foe Goretad used WaterGun on Windos"
+    ]
+}
+{
+    "monsterData": [
+        "Windos 13.63636",
+        "Marshtic 100",
+        "Windos 40",
+        "Goretad 100"
+    ],
+    "actionData": [
+        "Windos used WaterPulse on Windos",
+        "Foe Windos used AerialAce on Marshtic",
+        "Marshtic used WaterPulse on Windos",
+        "Foe Windos has fainted",
+        "Foe Goretad used WaterGun on Marshtic"
+    ]
+}
+{
+    "monsterData": [
+        "Windos 13.63636",
+        "Marshtic 54.54546",
+        "Fainted",
+        "Goretad 100"
+    ],
+    "actionData": [
+        "Windos used AerialAce on Goretad",
+        "Marshtic used WaterPulse on Goretad",
+        "Foe Goretad has fainted"
+    ]
+}

@@ -114,6 +114,10 @@ public class BattleSystem : MonoBehaviour
     MonsterUnit o_Monster2;
     MonsterUnit o_Monster1_persistent;
     MonsterUnit o_Monster2_persistent;
+
+    [Header("Logger Information")]
+    BattleLogger battleLog;
+    TurnData currentTurn;
     #endregion
 
     #region UI Functions
@@ -231,7 +235,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
     #endregion
-
+     
     #region Main Battle Routine and it's helpers
     public void intializeBattle(List<MonsterUnit> partyMonsters, MonsterUnit opMonster1, MonsterUnit opMonster2)
     {
@@ -251,6 +255,10 @@ public class BattleSystem : MonoBehaviour
 
         //begin battle
         StartCoroutine(BattleRoutine());
+
+        //initialise logger
+        BattleLogger.Init();
+        battleLog = new BattleLogger();
     }
     public IEnumerator BattleRoutine()
     {
@@ -407,6 +415,8 @@ public class BattleSystem : MonoBehaviour
           Internals.allowMapMovement = true;
           Internals.allowBattle = true;
           Internals.battleStarted = false;*/
+
+        battleLog.SaveBattleLog();
 
         SceneManager.LoadScene(Internals.lastBattleSceneName);
     }
@@ -640,12 +650,19 @@ public class BattleSystem : MonoBehaviour
     {
         isRunRoutineActive = true;
 
-        printDialogues(new string[] { "You decided to run away!" });
+        currentTurn = new TurnData();
+        currentTurn.AddMonsters(new MonsterUnit[] { p_Monster1, p_Monster2, o_Monster1, o_Monster2 });
+
+        string dialogue = "You decided to run away!";
+        
+        currentTurn.AddAction(dialogue);
+        printDialogues(new string[] { dialogue });
         yield return waitUntilDialogueRoutineComplete;
 
         winState = false;
         isBattleActive = false;
-        
+
+        battleLog.AddTurn(currentTurn);
         isRunRoutineActive = false;
     }
     #endregion
@@ -655,14 +672,26 @@ public class BattleSystem : MonoBehaviour
     {
         isExecutionRoutineActive = true;
 
+        //logging stuff
+        currentTurn = new TurnData();
+        currentTurn.AddMonsters(new MonsterUnit[] {p_Monster1,p_Monster2,o_Monster1,o_Monster2});
+
         #region Switching Region
         WaitForSeconds waitAfterSwitching = new WaitForSeconds(0.5f);
         if(monsterOneData.actionType==ExecuteStageData.ActionType.party)
         {
-            if(p_Monster1 != null)
-                printDialogues(new string[] {p_Monster1.BaseState.name+" is being switched to "+monsterOneData.nextMonster.BaseState.name});
+            if (p_Monster1 != null)
+            {
+                string dialogue = p_Monster1.BaseState.name + " is being switched to " + monsterOneData.nextMonster.BaseState.name;
+                printDialogues(new string[] { dialogue });
+                currentTurn.AddAction(dialogue);
+            }
             else
-                printDialogues(new string[] {"Sending out " + monsterOneData.nextMonster.BaseState.name });
+            {
+                string dialogue = "Sending out " + monsterOneData.nextMonster.BaseState.name;
+                printDialogues(new string[] { dialogue });
+                currentTurn.AddAction(dialogue);
+            }
 
             yield return waitUntilDialogueRoutineComplete;
 
@@ -673,10 +702,18 @@ public class BattleSystem : MonoBehaviour
         if (monsterTwoData.actionType == ExecuteStageData.ActionType.party)
         {
             if (p_Monster2 != null)
-                printDialogues(new string[] { p_Monster2.BaseState.name + " is being switched to " + monsterTwoData.nextMonster.BaseState.name });
+            {
+                string dialogue = p_Monster2.BaseState.name + " is being switched to " + monsterTwoData.nextMonster.BaseState.name;
+                printDialogues(new string[] { dialogue });
+                currentTurn.AddAction(dialogue);
+            }
             else
-                printDialogues(new string[] { "Sending out " + monsterTwoData.nextMonster.BaseState.name });
-            
+            {
+                string dialogue = "Sending out " + monsterTwoData.nextMonster.BaseState.name;
+                printDialogues(new string[] { dialogue });
+                currentTurn.AddAction(dialogue);
+            }
+
             yield return waitUntilDialogueRoutineComplete;
 
             p_Monster2 = monsterTwoData.nextMonster;
@@ -736,6 +773,7 @@ public class BattleSystem : MonoBehaviour
         }
         #endregion
 
+        battleLog.AddTurn(currentTurn);
         isExecutionRoutineActive = false;
     }
     private bool isBattleWon()
@@ -764,10 +802,16 @@ public class BattleSystem : MonoBehaviour
         
         self.takeDamage(move.BaseDamage);
         self.takeTemporaryStatEffects(move.StatEffects);
-        if(!isOpMonster)
-            printDialogues(new string[]{self.BaseState.name+" used "+move.name});
+        
+        string dialogue="";
+        if (!isOpMonster)
+            dialogue = self.BaseState.name + " used " + move.name;
         else
-            printDialogues(new string[] {"Opposing "+self.BaseState.name + " used " + move.name});
+            dialogue = "Opposing " + self.BaseState.name + " used " + move.name;
+
+
+        currentTurn.AddAction(dialogue);
+        printDialogues(new string[] { dialogue });
         yield return waitUntilDialogueRoutineComplete;
 
         selfImage.color = ogColor;
@@ -804,10 +848,14 @@ public class BattleSystem : MonoBehaviour
             target.takeDamage(move.BaseDamage);
             target.takeTemporaryStatEffects(move.StatEffects);
 
-            if(!isOpMonster)
-                printDialogues(new string[] { self.BaseState.name + " used " + move.name + " on "+target.BaseState.Name});
+            string dialogue = "";
+            if (!isOpMonster)
+                dialogue = self.BaseState.name + " used " + move.name + " on " + target.BaseState.Name;
             else
-                printDialogues(new string[] {"Foe "+self.BaseState.name + " used " + move.name + " on " + target.BaseState.Name });
+                dialogue = "Foe " + self.BaseState.name + " used " + move.name + " on " + target.BaseState.Name;
+
+            currentTurn.AddAction(dialogue);
+            printDialogues(new string[] { dialogue });
             yield return waitUntilDialogueRoutineComplete;
 
             selfImage.color = ogColor;
@@ -876,13 +924,25 @@ public class BattleSystem : MonoBehaviour
     private void postMoveStateUpdate()
     {
         if (p_Monster1 != null && p_Monster1.IsFainted)
+        {
+            currentTurn.AddAction(p_Monster1.BaseState.name + " has fainted");
             p_Monster1 = null;
+        }
         if (p_Monster2 != null && p_Monster2.IsFainted)
+        {
+            currentTurn.AddAction(p_Monster2.BaseState.name + " has fainted");
             p_Monster2 = null;
+        }
         if (o_Monster1 != null && o_Monster1.IsFainted)
+        {
+            currentTurn.AddAction("Foe "+o_Monster1.BaseState.name + " has fainted");
             o_Monster1 = null;
+        }
         if (o_Monster2 != null && o_Monster2.IsFainted)
+        {
+            currentTurn.AddAction("Foe " + o_Monster2.BaseState.name + " has fainted");
             o_Monster2 = null;
+        }
         
         SetUnitUIToActiveMonsters();
     }
