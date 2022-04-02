@@ -393,9 +393,10 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (MonsterUnit m in party)
         {
-            m.ResetMonster();
             if(winState)
                 m.levelUp();
+            
+            m.ResetMonster();
         }
         
         winState = false;
@@ -695,7 +696,7 @@ public class BattleSystem : MonoBehaviour
                 return -1;
             if (m2 == null)
                 return 1;
-            return m2.LeveledStats.speed - m1.LeveledStats.speed;
+            return m2.EffectiveStats.speed - m1.EffectiveStats.speed;
         }); //sorted by speed
         foreach(MonsterUnit m in inBattleMonster)
         {
@@ -835,19 +836,40 @@ public class BattleSystem : MonoBehaviour
     private List<MonsterUnit> CreateTargetListForOpponentMonster(MonsterUnit currentOp, MoveBase opMove)
     {
         List<MonsterUnit> targets = new List<MonsterUnit>();
-        
-        if(opMove.Target==Target.singOp)
-            targets.Add(Random.Range(0, 2) == 0 ? p_Monster1 : p_Monster2);
-        else if(opMove.Target==Target.doubOp)
+
+        if (opMove.Target == Target.singOp && (p_Monster1!=null || p_Monster2!=null))
         {
-            targets.Add(p_Monster1);
-            targets.Add(p_Monster2);
+            int randomChoice = Random.Range(0, 2);
+            if (randomChoice == 0 && p_Monster1 != null)
+                targets.Add(p_Monster1);
+            else if(randomChoice== 1 && p_Monster2 !=null)
+                targets.Add(p_Monster2);
+            else
+            {
+                if (randomChoice == 0)
+                    targets.Add(p_Monster2);
+                else if(randomChoice == 1)
+                    targets.Add(p_Monster1);
+            }
+            
         }
-        else if(opMove.Target==Target.all)
+        else if (opMove.Target == Target.doubOp)
         {
-            targets.Add(p_Monster1);
-            targets.Add(p_Monster2);
-            targets.Add(currentOp == o_Monster1 ? o_Monster1 : o_Monster2);
+            if(p_Monster1!=null)
+                targets.Add(p_Monster1);
+            if(p_Monster2!=null)
+                targets.Add(p_Monster2);
+        }
+        else if (opMove.Target == Target.all)
+        {
+            if (p_Monster1 != null)
+                targets.Add(p_Monster1);
+            if (p_Monster2 != null)
+                targets.Add(p_Monster2);
+            if(currentOp==o_Monster1 && o_Monster2!=null)
+                targets.Add(o_Monster2);
+            if (currentOp == o_Monster2 && o_Monster1 != null)
+                targets.Add(o_Monster1);
         }
         return targets;
     }

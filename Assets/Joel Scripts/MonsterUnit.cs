@@ -14,6 +14,7 @@ public class MonsterUnit
     //variable state
     [SerializeField] private int level;
     [SerializeField] private Stats leveledStats;
+    [SerializeField] private Stats effectiveStats;
     [SerializeField] private Stats maxStats;
 
     //battle variable state
@@ -26,7 +27,7 @@ public class MonsterUnit
     
     //private properties
     public bool IsFainted { get => isFainted;}
-    public Stats LeveledStats { get => leveledStats;}
+    public Stats EffectiveStats { get => effectiveStats;}
     
     public void Init()
     {
@@ -36,18 +37,20 @@ public class MonsterUnit
         for (int i = 2; i <= Level; ++i)
             leveledStats += BaseState.StatsChangePerLevel;
 
+        effectiveStats = leveledStats;
+
         maxStats = baseState.BaseStats;
         for (int i = 2; i <= MAX_LEVEL; ++i)
             maxStats += BaseState.StatsChangePerLevel;
 
-        activeHP = leveledStats.hp;
+        activeHP = effectiveStats.hp;
         isFainted = false;
     }
     
     #region getters
     public float getNormalizedHP()
     {
-        return (float)activeHP / LeveledStats.hp;
+        return (float)activeHP / effectiveStats.hp;
     }
     #endregion
 
@@ -63,16 +66,16 @@ public class MonsterUnit
     public void takeDamage(int damage)
     {
         activeHP -= damage;
-        activeHP = Mathf.Max(activeHP, 0);
+        activeHP = Mathf.Clamp(activeHP, 0,effectiveStats.hp);
         isFainted = activeHP == 0 ? true : false;
     }
     public void takeTemporaryStatEffects(Stats effects)
     {
-        leveledStats += effects;
-        leveledStats.attack = Mathf.Clamp(leveledStats.attack,baseState.BaseStats.attack, maxStats.attack);
-        leveledStats.defense = Mathf.Clamp(leveledStats.defense, baseState.BaseStats.defense, maxStats.defense);
-        leveledStats.speed = Mathf.Clamp(leveledStats.speed, baseState.BaseStats.speed, maxStats.speed);
-        leveledStats.hp = Mathf.Clamp(leveledStats.hp, baseState.BaseStats.hp, maxStats.hp);
+        effectiveStats += effects;
+        effectiveStats.attack = Mathf.Clamp(effectiveStats.attack,baseState.BaseStats.attack, maxStats.attack);
+        effectiveStats.defense = Mathf.Clamp(effectiveStats.defense, baseState.BaseStats.defense, maxStats.defense);
+        effectiveStats.speed = Mathf.Clamp(effectiveStats.speed, baseState.BaseStats.speed, maxStats.speed);
+        effectiveStats.hp = Mathf.Clamp(effectiveStats.hp, baseState.BaseStats.hp, maxStats.hp);
     }
     public void ResetMonster()
     {
