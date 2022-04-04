@@ -85,6 +85,7 @@ public class BattleSystem : MonoBehaviour
 
     [Header("Item Routine Information")]
     [SerializeField] GameObject itemSelector;
+    [SerializeField] Text[] itemButtonText;
     private bool isItemRoutineActive = false;
     private bool isItemButtonPressed = false;
 
@@ -482,6 +483,15 @@ public class BattleSystem : MonoBehaviour
         for (int i = 0; i < monsterMoves.Length; i++)
             moveButtonText[i].text = monsterMoves[i].Name;
     }
+
+    private void assignItemsToItemButtons(MonsterUnit monster)
+    {
+        ItemBase[] monsterItems = monster.BaseState.Items;
+
+        for (int i = 0; i < monsterItems.Length; i++)
+            itemButtonText[i].text = "Quantity: " + monsterItems[i].Quantity.ToString();
+    }
+
     public void chooseMove(int moveIndex)
     {
         isMoveButtonPressed = true;
@@ -491,6 +501,17 @@ public class BattleSystem : MonoBehaviour
         else if (status == BATTLE.secondAction)
             monsterTwoData.nextMove = p_Monster2.BaseState.Moves[moveIndex];
     }
+
+    public void chooseItem(int itemIndex)
+    {
+        isItemButtonPressed = true;
+
+        if (status == BATTLE.firstAction)
+            monsterOneData.nextItem = p_Monster1.BaseState.Items[itemIndex];
+        else if (status == BATTLE.secondAction)
+            monsterTwoData.nextItem = p_Monster2.BaseState.Items[itemIndex];
+    }
+
     private void assignTargetToMove(ref ExecuteStageData monsterData)
     {
         MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
@@ -522,6 +543,39 @@ public class BattleSystem : MonoBehaviour
 
         monsterData.nextMoveTarget = targetMonsterList;
     }
+
+    private void assignTargetToItem(ref ExecuteStageData monsterData)
+    {
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        List<MonsterUnit> targetMonsterList = new List<MonsterUnit>();
+
+        if (monsterData.nextMove.Target == Target.self)
+            targetMonsterList.Add(monster);
+        else if (monsterData.nextMove.Target == Target.doubOp)
+        {
+            if (o_Monster1 != null)
+                targetMonsterList.Add(o_Monster1);
+            if (o_Monster2 != null)
+                targetMonsterList.Add(o_Monster2);
+        }
+        else if (monsterData.nextMove.Target == Target.all)
+        {
+            if (o_Monster1 != null)
+                targetMonsterList.Add(o_Monster1);
+            if (o_Monster2 != null)
+                targetMonsterList.Add(o_Monster2);
+
+            if (p_Monster1 != null && p_Monster1 != monster)
+                targetMonsterList.Add(p_Monster1);
+
+            if (p_Monster2 != null && p_Monster2 != monster)
+                targetMonsterList.Add(p_Monster2);
+
+        }
+
+        monsterData.nextItemTarget = targetMonsterList;
+    }
+
     private IEnumerator MoveTargetSelectRoutine()
     {
         isMoveTargetSelectRoutineActive = true;
@@ -590,8 +644,26 @@ public class BattleSystem : MonoBehaviour
     #region Item Routine and its helpers
     private IEnumerator ItemRoutine()
     {
-        //Requires Archit code
-        yield return null;
+        isItemRoutineActive = true;
+
+        WaitUntil waitUntilItemButtonPressed = new WaitUntil(() => isItemButtonPressed);
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+
+        printDialogues(new string[] { "Which item will " + monster.BaseState.Name + " use?" });
+        yield return waitUntilDialogueRoutineComplete;
+
+        assignItemsToItemButtons(monster);
+        EnableItemSelectorUI();
+
+        yield return waitUntilItemButtonPressed;
+        ResetUISelectors();
+
+        if (status == BATTLE.firstAction)
+            assignTargetToItem(ref monsterOneData);
+        else
+            assignTargetToItem(ref monsterTwoData);
+
+        isItemRoutineActive = false;
     }
     #endregion
 
@@ -1035,7 +1107,9 @@ public struct ExecuteStageData
     public ActionType actionType;
     public bool? runAway;
     public MoveBase nextMove;
+    public ItemBase nextItem;
     public List<MonsterUnit> nextMoveTarget;
+    public List<MonsterUnit> nextItemTarget;
     public MonsterUnit nextMonster;
 }
 

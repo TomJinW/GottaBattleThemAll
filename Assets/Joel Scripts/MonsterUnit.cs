@@ -21,6 +21,8 @@ public class MonsterUnit
     [SerializeField] private int activeHP;
     [SerializeField] private bool isFainted;
 
+    [SerializeField] private int[] currItemQuant;
+
     //public properties
     public MonsterBase BaseState { get => baseState; set => baseState = value; }
     public int Level { get => level; set => level = value; }
@@ -45,6 +47,11 @@ public class MonsterUnit
 
         activeHP = effectiveStats.hp;
         isFainted = false;
+
+        for (int i = 0; i < baseState.Items.Length; i++)
+        {
+            currItemQuant[i] = baseState.Items[i].Quantity;
+        }
     }
     
     #region getters

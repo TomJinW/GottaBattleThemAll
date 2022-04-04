@@ -12,6 +12,7 @@ public class MonsterBase : ScriptableObject
     [SerializeField] private Stats baseStats;
     [SerializeField] private Stats statsChangePerLevel;
     [SerializeField] private MoveBase[] moves = new MoveBase[4];
+    [SerializeField] private ItemBase[] items = new ItemBase[7];
 
     public string Name { get => name;}
     public Sprite Sprite { get => sprite;}
@@ -19,6 +20,7 @@ public class MonsterBase : ScriptableObject
     public Stats BaseStats { get => baseStats;}
     public Stats StatsChangePerLevel { get => statsChangePerLevel;}
     public MoveBase[] Moves { get => moves;}
+    public ItemBase[] Items { get => items;}
 }
 
 

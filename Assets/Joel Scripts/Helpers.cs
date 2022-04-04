@@ -23,6 +23,11 @@ public enum Type
     Volcano, Swamp, Snowy, None
 }
 
+public enum ItemType
+{
+    Health, Point, Stat, Type, End
+}
+
 public enum Target
 {
     self, singOp, doubOp, all
