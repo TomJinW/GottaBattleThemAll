@@ -25,7 +25,7 @@ public enum Type
 
 public enum ItemType
 {
-    Health, Point, Stat, Type, End
+    Health, End
 }
 
 public enum Target

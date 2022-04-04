@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Super Potion
   m_EditorClassIdentifier: 
   name: Super Potion
-  quantity: 2
+  quantity: 5
+  index: 1
   type: 0
   target: 0
   statEffects:

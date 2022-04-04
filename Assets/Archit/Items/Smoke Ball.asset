@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Potion
   quantity: 5
-  type: 4
-  target: 3
+  index: 3
+  type: 1
+  target: 0
   statEffects:
     attack: 0
     defense: 0

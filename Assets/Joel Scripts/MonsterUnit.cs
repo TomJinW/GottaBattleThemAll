@@ -26,13 +26,16 @@ public class MonsterUnit
     //public properties
     public MonsterBase BaseState { get => baseState; set => baseState = value; }
     public int Level { get => level; set => level = value; }
-    
+
     //private properties
+
     public bool IsFainted { get => isFainted;}
     public Stats EffectiveStats { get => effectiveStats;}
     
     public void Init()
     {
+        currItemQuant = new int[4];
+
         level = Mathf.Clamp(Level, MIN_LEVEL, MAX_LEVEL);
         
         leveledStats = baseState.BaseStats;
@@ -61,6 +64,11 @@ public class MonsterUnit
     }
     #endregion
 
+    public int[] getCurrentItemQuant()
+    {
+        return currItemQuant;
+    }
+
     #region modifiers
     public void levelUp()
     {
@@ -76,6 +84,28 @@ public class MonsterUnit
         activeHP = Mathf.Clamp(activeHP, 0,effectiveStats.hp);
         isFainted = activeHP == 0 ? true : false;
     }
+
+    public bool ApplyPotion(ItemBase item)
+    {
+        if (currItemQuant[item.Index] > 0)
+        {
+            gainHealth(item.StatEffects.hp);
+            currItemQuant[item.Index] -= 1;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void gainHealth(int health)
+    {
+        activeHP += health;
+        activeHP = Mathf.Clamp(activeHP, 0, effectiveStats.hp);
+    }
+
+
     public void takeTemporaryStatEffects(Stats effects)
     {
         effectiveStats += effects;

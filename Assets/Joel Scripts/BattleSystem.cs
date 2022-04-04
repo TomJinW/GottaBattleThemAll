@@ -43,12 +43,15 @@ public class BattleSystem : MonoBehaviour
     {
         monsterOneData.actionType = ExecuteStageData.ActionType.invalid;
         monsterOneData.nextMove = null;
+        monsterOneData.nextItem = null;
         monsterOneData.nextMoveTarget = null;
+        monsterOneData.nextItemTarget = null;
         monsterOneData.nextMonster = null;
 
         monsterTwoData.actionType = ExecuteStageData.ActionType.invalid;
         monsterTwoData.nextMove = null;
-        monsterTwoData.nextMoveTarget = null;
+        monsterTwoData.nextItem = null;
+        monsterTwoData.nextItemTarget = null;
         monsterTwoData.nextMonster = null;
     }
 
@@ -177,9 +180,9 @@ public class BattleSystem : MonoBehaviour
             GameObject.Destroy(child.gameObject);
         }
 
-        //Item Selection (Archit code required)
-        /*itemSelector.SetActive(false);
-        isItemButtonPressed = false;*/
+        //Item Selection
+        itemSelector.SetActive(false);
+        isItemButtonPressed = false;
 
         //Party Sellection
         partySelector.SetActive(false);
@@ -487,9 +490,10 @@ public class BattleSystem : MonoBehaviour
     private void assignItemsToItemButtons(MonsterUnit monster)
     {
         ItemBase[] monsterItems = monster.BaseState.Items;
+        int[] currentQuants = monster.getCurrentItemQuant();
 
         for (int i = 0; i < monsterItems.Length; i++)
-            itemButtonText[i].text = "Quantity: " + monsterItems[i].Quantity.ToString();
+            itemButtonText[i].text = "Quantity: " + currentQuants[i];
     }
 
     public void chooseMove(int moveIndex)
@@ -549,16 +553,16 @@ public class BattleSystem : MonoBehaviour
         MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
         List<MonsterUnit> targetMonsterList = new List<MonsterUnit>();
 
-        if (monsterData.nextMove.Target == Target.self)
+        if (monsterData.nextItem.Target == Target.self)
             targetMonsterList.Add(monster);
-        else if (monsterData.nextMove.Target == Target.doubOp)
+        else if (monsterData.nextItem.Target == Target.doubOp)
         {
             if (o_Monster1 != null)
                 targetMonsterList.Add(o_Monster1);
             if (o_Monster2 != null)
                 targetMonsterList.Add(o_Monster2);
         }
-        else if (monsterData.nextMove.Target == Target.all)
+        else if (monsterData.nextItem.Target == Target.all)
         {
             if (o_Monster1 != null)
                 targetMonsterList.Add(o_Monster1);
@@ -794,11 +798,39 @@ public class BattleSystem : MonoBehaviour
         }
         #endregion
 
+        #region Item's region
+        WaitUntil waitUntilSelfItemRoutineComplete = new WaitUntil(() => !isSelfItemRoutineActive);
+
+        List<MonsterUnit> inBattleMonster = new List<MonsterUnit>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };
+        
+        foreach (MonsterUnit m in inBattleMonster)
+        {
+            if (m == null)
+                continue;
+
+            else if (m == p_Monster1 && monsterOneData.actionType == ExecuteStageData.ActionType.items)
+            {
+                if (monsterOneData.nextItem.Target == Target.self)
+                    StartCoroutine(selfItemRoutine(p_Monster1, monsterOneData.nextItem, playerUnit.PokemonOneSprite));
+
+            }
+
+            else if (m == p_Monster2 && monsterTwoData.actionType == ExecuteStageData.ActionType.items)
+            {
+                if (monsterTwoData.nextItem.Target == Target.self)
+                    StartCoroutine(selfItemRoutine(p_Monster2, monsterTwoData.nextItem, playerUnit.PokemonTwoSprite));
+                
+            }
+
+            yield return waitUntilSelfItemRoutineComplete;
+        }
+        #endregion
+
         #region Move's region
         WaitUntil waitUntilSelfMoveRoutineComplete = new WaitUntil(() => !isSelfMoveRoutineActive);
         WaitUntil waitUntilOtherMoveRoutineComplete = new WaitUntil(() => !isOtherMoveRoutineActive);
         
-        List<MonsterUnit> inBattleMonster = new List<MonsterUnit>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };
+        //List<MonsterUnit> inBattleMonster = new List<MonsterUnit>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };         //Items already has battle monsters
         inBattleMonster.Sort(delegate (MonsterUnit m1, MonsterUnit m2)
         {
            if(m1==null)
@@ -863,6 +895,61 @@ public class BattleSystem : MonoBehaviour
         }
         return true;
     }
+
+    //Item area
+
+    private bool isSelfItemRoutineActive = false;
+    private IEnumerator selfItemRoutine(MonsterUnit self, ItemBase item, Image selfImage, bool isOpMonster = false)
+    {
+        isSelfItemRoutineActive = true;
+
+        WaitForSeconds waitAfterItem = new WaitForSeconds(0.5f);
+        Color ogColor = selfImage.color;
+        selfImage.color = new Color(ogColor.r / 2, 1, ogColor.b / 2);
+
+        //self.takeDamage(move.BaseDamage);
+        //self.takeTemporaryStatEffects(move.StatEffects);
+
+        bool flag = false;
+
+        string dialogue = "";
+
+        if (item.Type == ItemType.Health)
+        {
+            flag = self.ApplyPotion(item);
+
+            if (flag)
+                dialogue = self.BaseState.name + " used " + item.name;
+            else
+                dialogue = item.name + " not available";
+        }
+        else if (item.Type == ItemType.End)
+        {
+            dialogue = self.BaseState.name + " used " + item.name + ". Battle Ends!";
+        }
+        //self.takeTemporaryStatEffects(item.StatEffects);
+
+        currentTurn.AddAction(dialogue);
+        printDialogues(new string[] { dialogue });
+        yield return waitUntilDialogueRoutineComplete;
+
+        selfImage.color = ogColor;
+
+        postMoveStateUpdate();
+
+        if (item.Type == ItemType.End)
+        {
+            winState = false;
+            isBattleActive = false;
+            isSelfItemRoutineActive = false;
+            isExecutionRoutineActive = false;
+        }
+
+        yield return waitAfterItem;
+
+        isSelfItemRoutineActive = false;
+    }
+
     private bool isSelfMoveRoutineActive = false;
     private IEnumerator selfMoveRoutine(MonsterUnit self, MoveBase move, Image selfImage,bool isOpMonster=false)
     {

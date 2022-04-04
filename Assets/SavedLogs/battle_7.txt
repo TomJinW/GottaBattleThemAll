@@ -1,0 +1,11 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Muboach 100",
+        "Muboach 100"
+    ],
+    "actionData": [
+        "You decided to run away!"
+    ]
+}
