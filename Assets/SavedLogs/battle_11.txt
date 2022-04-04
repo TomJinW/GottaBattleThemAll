@@ -1,0 +1,78 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Goretad 100",
+        "Woolord 100"
+    ],
+    "actionData": [
+        "Charmcargo used Potion",
+        "Opposing Goretad used Harden",
+        "Opposing Woolord used Amnesia",
+        "Marshtic used WaterPulse on Goretad"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Goretad 40",
+        "Woolord 100"
+    ],
+    "actionData": [
+        "Foe Goretad used Absorb on Marshtic",
+        "Foe Woolord used BodySlam on Charmcargo",
+        "Marshtic used WaterPulse on Goretad",
+        "Foe Goretad has fainted"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 70",
+        "Marshtic 75",
+        "Fainted",
+        "Woolord 100"
+    ],
+    "actionData": [
+        "Foe Woolord used WaterPulse on Charmcargo",
+        "Marshtic used WaterPulse on Woolord",
+        "Charmcargo used Flamethrower on Woolord"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 40",
+        "Marshtic 75",
+        "Fainted",
+        "Woolord 60"
+    ],
+    "actionData": [
+        "Charmcargo used Potion",
+        "Opposing Woolord used Amnesia",
+        "Marshtic used WaterPulse on Woolord"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 65",
+        "Marshtic 75",
+        "Fainted",
+        "Woolord 40"
+    ],
+    "actionData": [
+        "Charmcargo used Potion",
+        "Marshtic used Super Potion",
+        "Opposing Woolord used Amnesia"
+    ]
+}
+{
+    "monsterData": [
+        "Charmcargo 90",
+        "Marshtic 100",
+        "Fainted",
+        "Woolord 40"
+    ],
+    "actionData": [
+        "You decided to run away!"
+    ]
+}

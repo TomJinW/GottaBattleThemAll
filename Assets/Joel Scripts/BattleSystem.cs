@@ -487,14 +487,6 @@ public class BattleSystem : MonoBehaviour
             moveButtonText[i].text = monsterMoves[i].Name;
     }
 
-    private void assignItemsToItemButtons(MonsterUnit monster)
-    {
-        ItemBase[] monsterItems = monster.BaseState.Items;
-        int[] currentQuants = monster.getCurrentItemQuant();
-
-        for (int i = 0; i < monsterItems.Length; i++)
-            itemButtonText[i].text = "Quantity: " + currentQuants[i];
-    }
 
     public void chooseMove(int moveIndex)
     {
@@ -506,15 +498,7 @@ public class BattleSystem : MonoBehaviour
             monsterTwoData.nextMove = p_Monster2.BaseState.Moves[moveIndex];
     }
 
-    public void chooseItem(int itemIndex)
-    {
-        isItemButtonPressed = true;
 
-        if (status == BATTLE.firstAction)
-            monsterOneData.nextItem = p_Monster1.BaseState.Items[itemIndex];
-        else if (status == BATTLE.secondAction)
-            monsterTwoData.nextItem = p_Monster2.BaseState.Items[itemIndex];
-    }
 
     private void assignTargetToMove(ref ExecuteStageData monsterData)
     {
@@ -548,37 +532,7 @@ public class BattleSystem : MonoBehaviour
         monsterData.nextMoveTarget = targetMonsterList;
     }
 
-    private void assignTargetToItem(ref ExecuteStageData monsterData)
-    {
-        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
-        List<MonsterUnit> targetMonsterList = new List<MonsterUnit>();
 
-        if (monsterData.nextItem.Target == Target.self)
-            targetMonsterList.Add(monster);
-        else if (monsterData.nextItem.Target == Target.doubOp)
-        {
-            if (o_Monster1 != null)
-                targetMonsterList.Add(o_Monster1);
-            if (o_Monster2 != null)
-                targetMonsterList.Add(o_Monster2);
-        }
-        else if (monsterData.nextItem.Target == Target.all)
-        {
-            if (o_Monster1 != null)
-                targetMonsterList.Add(o_Monster1);
-            if (o_Monster2 != null)
-                targetMonsterList.Add(o_Monster2);
-
-            if (p_Monster1 != null && p_Monster1 != monster)
-                targetMonsterList.Add(p_Monster1);
-
-            if (p_Monster2 != null && p_Monster2 != monster)
-                targetMonsterList.Add(p_Monster2);
-
-        }
-
-        monsterData.nextItemTarget = targetMonsterList;
-    }
 
     private IEnumerator MoveTargetSelectRoutine()
     {
@@ -669,6 +623,55 @@ public class BattleSystem : MonoBehaviour
 
         isItemRoutineActive = false;
     }
+    public void chooseItem(int itemIndex)
+    {
+        isItemButtonPressed = true;
+
+        if (status == BATTLE.firstAction)
+            monsterOneData.nextItem = p_Monster1.BaseState.Items[itemIndex];
+        else if (status == BATTLE.secondAction)
+            monsterTwoData.nextItem = p_Monster2.BaseState.Items[itemIndex];
+    }
+    private void assignItemsToItemButtons(MonsterUnit monster)
+    {
+        ItemBase[] monsterItems = monster.BaseState.Items;
+        int[] currentQuants = monster.getCurrentItemQuant();
+
+        for (int i = 0; i < monsterItems.Length; i++)
+            itemButtonText[i].text = "Quantity: " + currentQuants[i];
+    }
+    private void assignTargetToItem(ref ExecuteStageData monsterData)
+    {
+        MonsterUnit monster = status == BATTLE.firstAction ? p_Monster1 : (status == BATTLE.secondAction ? p_Monster2 : null);
+        List<MonsterUnit> targetMonsterList = new List<MonsterUnit>();
+
+        if (monsterData.nextItem.Target == Target.self)
+            targetMonsterList.Add(monster);
+        else if (monsterData.nextItem.Target == Target.doubOp)
+        {
+            if (o_Monster1 != null)
+                targetMonsterList.Add(o_Monster1);
+            if (o_Monster2 != null)
+                targetMonsterList.Add(o_Monster2);
+        }
+        else if (monsterData.nextItem.Target == Target.all)
+        {
+            if (o_Monster1 != null)
+                targetMonsterList.Add(o_Monster1);
+            if (o_Monster2 != null)
+                targetMonsterList.Add(o_Monster2);
+
+            if (p_Monster1 != null && p_Monster1 != monster)
+                targetMonsterList.Add(p_Monster1);
+
+            if (p_Monster2 != null && p_Monster2 != monster)
+                targetMonsterList.Add(p_Monster2);
+
+        }
+
+        monsterData.nextItemTarget = targetMonsterList;
+    }
+
     #endregion
 
     #region Party Routine and its helpers
