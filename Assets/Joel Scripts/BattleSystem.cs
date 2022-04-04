@@ -830,53 +830,58 @@ public class BattleSystem : MonoBehaviour
         #endregion
 
         #region Move's region
-        WaitUntil waitUntilSelfMoveRoutineComplete = new WaitUntil(() => !isSelfMoveRoutineActive);
-        WaitUntil waitUntilOtherMoveRoutineComplete = new WaitUntil(() => !isOtherMoveRoutineActive);
-        
-        //List<MonsterUnit> inBattleMonster = new List<MonsterUnit>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };         //Items already has battle monsters
-        inBattleMonster.Sort(delegate (MonsterUnit m1, MonsterUnit m2)
+        if (isBattleActive)
         {
-           if(m1==null)
-                return -1;
-            if (m2 == null)
-                return 1;
-            return m2.EffectiveStats.speed - m1.EffectiveStats.speed;
-        }); //sorted by speed
-        foreach(MonsterUnit m in inBattleMonster)
-        {
-            if (m == null)
-                continue;
             
-            else if(m==p_Monster1 && monsterOneData.actionType==ExecuteStageData.ActionType.move)
-            {
-                if (monsterOneData.nextMove.Target == Target.self)
-                    StartCoroutine(selfMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
+            WaitUntil waitUntilSelfMoveRoutineComplete = new WaitUntil(() => !isSelfMoveRoutineActive);
+            WaitUntil waitUntilOtherMoveRoutineComplete = new WaitUntil(() => !isOtherMoveRoutineActive);
 
-                else
-                    StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, monsterOneData.nextMoveTarget, playerUnit.PokemonOneSprite));
-            }
+            //List<MonsterUnit> inBattleMonster = new List<MonsterUnit>() { p_Monster1, p_Monster2, o_Monster1, o_Monster2 };         //Items already has battle monsters
+            inBattleMonster.Sort(delegate (MonsterUnit m1, MonsterUnit m2)
+            {
+                if (m1 == null)
+                    return -1;
+                if (m2 == null)
+                    return 1;
+                return m2.EffectiveStats.speed - m1.EffectiveStats.speed;
+            }); //sorted by speed
+            foreach (MonsterUnit m in inBattleMonster)
+            {
+                if (m == null)
+                    continue;
 
-            else if (m == p_Monster2 && monsterTwoData.actionType == ExecuteStageData.ActionType.move)
-            {
-                if (monsterTwoData.nextMove.Target == Target.self)
-                    StartCoroutine(selfMoveRoutine(p_Monster2, monsterTwoData.nextMove, playerUnit.PokemonTwoSprite));
-                else
-                    StartCoroutine(otherMoveRoutine(p_Monster2, monsterTwoData.nextMove, monsterTwoData.nextMoveTarget, playerUnit.PokemonTwoSprite));
-            }
-            else if(m== o_Monster1 || m == o_Monster2)
-            {
-                MoveBase opMove = m.BaseState.Moves[Random.Range(0,4)];
-                if(opMove.Target == Target.self)
-                    StartCoroutine(selfMoveRoutine(m, opMove, FindTargetImage(m),true));
-                else
+                else if (m == p_Monster1 && monsterOneData.actionType == ExecuteStageData.ActionType.move)
                 {
-                    List<MonsterUnit> targetForOpponents = CreateTargetListForOpponentMonster(m,opMove);
-                    StartCoroutine(otherMoveRoutine(m, opMove, targetForOpponents, FindTargetImage(m),true));
+                    if (monsterOneData.nextMove.Target == Target.self)
+                        StartCoroutine(selfMoveRoutine(p_Monster1, monsterOneData.nextMove, playerUnit.PokemonOneSprite));
+
+                    else
+                        StartCoroutine(otherMoveRoutine(p_Monster1, monsterOneData.nextMove, monsterOneData.nextMoveTarget, playerUnit.PokemonOneSprite));
                 }
+
+                else if (m == p_Monster2 && monsterTwoData.actionType == ExecuteStageData.ActionType.move)
+                {
+                    if (monsterTwoData.nextMove.Target == Target.self)
+                        StartCoroutine(selfMoveRoutine(p_Monster2, monsterTwoData.nextMove, playerUnit.PokemonTwoSprite));
+                    else
+                        StartCoroutine(otherMoveRoutine(p_Monster2, monsterTwoData.nextMove, monsterTwoData.nextMoveTarget, playerUnit.PokemonTwoSprite));
+                }
+                else if (m == o_Monster1 || m == o_Monster2)
+                {
+                    MoveBase opMove = m.BaseState.Moves[Random.Range(0, 4)];
+                    if (opMove.Target == Target.self)
+                        StartCoroutine(selfMoveRoutine(m, opMove, FindTargetImage(m), true));
+                    else
+                    {
+                        List<MonsterUnit> targetForOpponents = CreateTargetListForOpponentMonster(m, opMove);
+                        StartCoroutine(otherMoveRoutine(m, opMove, targetForOpponents, FindTargetImage(m), true));
+                    }
+                }
+
+                yield return waitUntilSelfMoveRoutineComplete;
+                yield return waitUntilOtherMoveRoutineComplete;
             }
             
-            yield return waitUntilSelfMoveRoutineComplete;
-            yield return waitUntilOtherMoveRoutineComplete;
         }
         #endregion
 
@@ -944,8 +949,6 @@ public class BattleSystem : MonoBehaviour
         {
             winState = false;
             isBattleActive = false;
-            isSelfItemRoutineActive = false;
-            isExecutionRoutineActive = false;
         }
 
         yield return waitAfterItem;

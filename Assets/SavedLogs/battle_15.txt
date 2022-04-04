@@ -1,0 +1,12 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Marshtic 100",
+        "Goretad 100"
+    ],
+    "actionData": [
+        "Charmcargo used Smoke Ball. Battle Ends!",
+        "Marshtic used Super Potion"
+    ]
+}

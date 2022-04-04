@@ -1,0 +1,16 @@
+{
+    "monsterData": [
+        "Charmcargo 100",
+        "Marshtic 100",
+        "Windos 100",
+        "Muboach 100"
+    ],
+    "actionData": [
+        "Charmcargo used Smoke Ball. Battle Ends!",
+        "Foe Windos used Bite on Marshtic",
+        "Marshtic used Recover",
+        "Foe Muboach used MudBomb on Charmcargo",
+        "Foe Muboach used MudBomb on Marshtic",
+        "Foe Muboach used MudBomb on Windos"
+    ]
+}
