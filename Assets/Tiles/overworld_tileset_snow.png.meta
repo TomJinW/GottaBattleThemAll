@@ -654,6 +654,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -662,7 +663,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -767,6 +768,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -5200,6 +5213,217 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      overworld_tileset_snow_172: -8252539993112570909
+      overworld_tileset_snow_79: -8450374537525122943
+      overworld_tileset_snow_28: -66177527214640336
+      overworld_tileset_snow_186: -4514972320857071593
+      overworld_tileset_snow_60: 4155449713287419021
+      overworld_tileset_snow_163: -7608196810262004395
+      overworld_tileset_snow_36: -8663746850722083386
+      overworld_tileset_snow_39: 7395400188751249923
+      overworld_tileset_snow_78: -7511358573479034130
+      overworld_tileset_snow_191: -8748009512147753626
+      overworld_tileset_snow_84: 6072012671178143435
+      overworld_tileset_snow_137: -7730227093597557528
+      overworld_tileset_snow_68: -155689515576884175
+      overworld_tileset_snow_99: -4767165403642909872
+      overworld_tileset_snow_161: 1059744302297720807
+      overworld_tileset_snow_31: -2019824572641981489
+      overworld_tileset_snow_136: -3531036198802527778
+      overworld_tileset_snow_38: 6296401706413434815
+      overworld_tileset_snow_89: 4413197618914070803
+      overworld_tileset_snow_25: -7921873487016353524
+      overworld_tileset_snow_40: -5658746194745058716
+      overworld_tileset_snow_69: -5217223327236487690
+      overworld_tileset_snow_206: 8177477135215094308
+      overworld_tileset_snow_130: -2174095773426323627
+      overworld_tileset_snow_160: 2432147324037942254
+      overworld_tileset_snow_35: -5829601184228824896
+      overworld_tileset_snow_108: 7301937061366725203
+      overworld_tileset_snow_94: 2719976991521556453
+      overworld_tileset_snow_122: -2129909227238116657
+      overworld_tileset_snow_101: -2123309056039741340
+      overworld_tileset_snow_164: 5772947233682882543
+      overworld_tileset_snow_46: -7307681788228988198
+      overworld_tileset_snow_165: 3008764565756351450
+      overworld_tileset_snow_42: -4534743542539573642
+      overworld_tileset_snow_24: -8803952437635394896
+      overworld_tileset_snow_53: 102006120609866194
+      overworld_tileset_snow_82: -2799501234370389542
+      overworld_tileset_snow_80: 5965867810565718362
+      overworld_tileset_snow_7: -1526465791475546450
+      overworld_tileset_snow_183: 4954358981520886600
+      overworld_tileset_snow_92: -1982683137824033955
+      overworld_tileset_snow_71: -1718656905150404997
+      overworld_tileset_snow_21: 6606822309021110015
+      overworld_tileset_snow_156: -2468321784961627546
+      overworld_tileset_snow_4: 1573794169233457328
+      overworld_tileset_snow_44: 6441888972115302795
+      overworld_tileset_snow_45: 149535654527727124
+      overworld_tileset_snow_23: 5367996853691765087
+      overworld_tileset_snow_88: -6175353906701580505
+      overworld_tileset_snow_198: 3271729472429378580
+      overworld_tileset_snow_197: 2961272948823001475
+      overworld_tileset_snow_86: 7648402329068836116
+      overworld_tileset_snow_125: 8427103766389042597
+      overworld_tileset_snow_134: -2753865488815846074
+      overworld_tileset_snow_157: 2349327205843640210
+      overworld_tileset_snow_190: -1019713921702669534
+      overworld_tileset_snow_123: 1782222585528822283
+      overworld_tileset_snow_193: 8467914577412426949
+      overworld_tileset_snow_17: -1473314954762083312
+      overworld_tileset_snow_10: 2659523354334266112
+      overworld_tileset_snow_59: -5756384840661580362
+      overworld_tileset_snow_58: -7188372159752664314
+      overworld_tileset_snow_15: 6094139042515196006
+      overworld_tileset_snow_81: 8998939257904387307
+      overworld_tileset_snow_153: -6371630381983892813
+      overworld_tileset_snow_194: 6346678154819583690
+      overworld_tileset_snow_93: 6901748601664333480
+      overworld_tileset_snow_74: -7161427686606383042
+      overworld_tileset_snow_48: -5318374754364453918
+      overworld_tileset_snow_97: -86178481018527901
+      overworld_tileset_snow_116: -9157583907077324227
+      overworld_tileset_snow_143: 8494496043742275086
+      overworld_tileset_snow_77: -6181443947764019792
+      overworld_tileset_snow_72: 4182509505049945328
+      overworld_tileset_snow_181: -1804766910190926262
+      overworld_tileset_snow_155: 1025637787319914302
+      overworld_tileset_snow_176: -8663097557642003281
+      overworld_tileset_snow_196: -2072875844747407154
+      overworld_tileset_snow_52: -5010581570029081270
+      overworld_tileset_snow_109: -5888868590746758221
+      overworld_tileset_snow_55: 2929003816374069157
+      overworld_tileset_snow_37: 2903858956758866473
+      overworld_tileset_snow_146: 919790385912534665
+      overworld_tileset_snow_154: 9154287427277795884
+      overworld_tileset_snow_128: -8137890527868199615
+      overworld_tileset_snow_105: -5822156241494806635
+      overworld_tileset_snow_104: 5071876128518393911
+      overworld_tileset_snow_14: 2714725294484585724
+      overworld_tileset_snow_209: -3579580663431316528
+      overworld_tileset_snow_107: 925779189160088245
+      overworld_tileset_snow_115: -5119794789642565422
+      overworld_tileset_snow_56: -8393763121497396786
+      overworld_tileset_snow_119: -2592279148636413048
+      overworld_tileset_snow_169: -5167217022760694361
+      overworld_tileset_snow_27: 1389816774017509688
+      overworld_tileset_snow_184: 4042313906263496488
+      overworld_tileset_snow_19: -1683003760836539939
+      overworld_tileset_snow_66: 2575600503957370534
+      overworld_tileset_snow_95: -6915760708118369427
+      overworld_tileset_snow_132: 103433859997411463
+      overworld_tileset_snow_138: 2331284186471530920
+      overworld_tileset_snow_175: 5584523803443277682
+      overworld_tileset_snow_127: 3853669031251026590
+      overworld_tileset_snow_49: 3360601848018471368
+      overworld_tileset_snow_173: -5717164659838386083
+      overworld_tileset_snow_6: 7314378447696283330
+      overworld_tileset_snow_182: -3472478825469798782
+      overworld_tileset_snow_87: -114736957247361978
+      overworld_tileset_snow_205: -8219057489621325569
+      overworld_tileset_snow_117: -1042427828237780810
+      overworld_tileset_snow_126: -6859763867108167667
+      overworld_tileset_snow_195: -1532755751579137405
+      overworld_tileset_snow_200: 7359732129751240816
+      overworld_tileset_snow_57: -4308988597412492571
+      overworld_tileset_snow_145: 7768464114240746866
+      overworld_tileset_snow_70: 1724433481707491207
+      overworld_tileset_snow_111: 1877027178879594893
+      overworld_tileset_snow_129: -4438574267342903311
+      overworld_tileset_snow_179: 5745898983859988720
+      overworld_tileset_snow_83: -7568409884637333495
+      overworld_tileset_snow_22: 5580262502519887477
+      overworld_tileset_snow_65: 7475380910144253200
+      overworld_tileset_snow_102: 3165023905844641798
+      overworld_tileset_snow_76: -1328564600978958946
+      overworld_tileset_snow_98: 6647161475745429321
+      overworld_tileset_snow_152: 3921125438520244210
+      overworld_tileset_snow_166: 1628255526966779718
+      overworld_tileset_snow_201: 8952128403825894009
+      overworld_tileset_snow_168: -47581441883613668
+      overworld_tileset_snow_30: -4412843130208288019
+      overworld_tileset_snow_50: -7284429891232641288
+      overworld_tileset_snow_103: -2337512322216866422
+      overworld_tileset_snow_144: -8831755784003385191
+      overworld_tileset_snow_174: -4994210658871369457
+      overworld_tileset_snow_110: 3326047575967278820
+      overworld_tileset_snow_33: 1461053743657119163
+      overworld_tileset_snow_11: -7895298494153272099
+      overworld_tileset_snow_16: -4347411019232812844
+      overworld_tileset_snow_162: 8342586657953411966
+      overworld_tileset_snow_120: 1220963872429758442
+      overworld_tileset_snow_113: 2288987571984826338
+      overworld_tileset_snow_141: 332541614599055531
+      overworld_tileset_snow_202: 7561811587981865933
+      overworld_tileset_snow_139: -4265590938400299364
+      overworld_tileset_snow_208: -8133381510432189523
+      overworld_tileset_snow_151: -811812295298504044
+      overworld_tileset_snow_43: 428262345263444794
+      overworld_tileset_snow_180: -6159077378606731490
+      overworld_tileset_snow_73: -4153883937859586882
+      overworld_tileset_snow_1: -7375092348586674156
+      overworld_tileset_snow_2: 3098398000476773846
+      overworld_tileset_snow_100: -4588989974142028863
+      overworld_tileset_snow_135: -1805613781642964666
+      overworld_tileset_snow_148: 8303190731365568671
+      overworld_tileset_snow_9: 7432395313206777920
+      overworld_tileset_snow_85: -1262663388128798208
+      overworld_tileset_snow_114: -8258577389837784270
+      overworld_tileset_snow_187: -4367263101780905517
+      overworld_tileset_snow_203: -5999899075540231891
+      overworld_tileset_snow_147: 726887035755203917
+      overworld_tileset_snow_118: 5007015449360349947
+      overworld_tileset_snow_54: 5952806031489874043
+      overworld_tileset_snow_171: -3527370421741756440
+      overworld_tileset_snow_112: -4065097789133087095
+      overworld_tileset_snow_133: -3971323312023201308
+      overworld_tileset_snow_8: 7979262123603423340
+      overworld_tileset_snow_62: -4209086403262265103
+      overworld_tileset_snow_13: 4268223696358450186
+      overworld_tileset_snow_61: 2903068103498664366
+      overworld_tileset_snow_188: -3579304346862651992
+      overworld_tileset_snow_131: -2105990099813811964
+      overworld_tileset_snow_29: 8376175324869667872
+      overworld_tileset_snow_96: 4060359721963326020
+      overworld_tileset_snow_75: 7854920516989868717
+      overworld_tileset_snow_26: -7267693634723370173
+      overworld_tileset_snow_32: -3697064673450282160
+      overworld_tileset_snow_18: 1733273616317955883
+      overworld_tileset_snow_34: 5966835349714532475
+      overworld_tileset_snow_91: 430315779604474952
+      overworld_tileset_snow_192: 2333244750431855026
+      overworld_tileset_snow_178: -5369862303502176959
+      overworld_tileset_snow_121: -4802322482477134941
+      overworld_tileset_snow_106: -639396257934061541
+      overworld_tileset_snow_47: -5116811233836412307
+      overworld_tileset_snow_124: 6946673793573679304
+      overworld_tileset_snow_199: -2176597145335955041
+      overworld_tileset_snow_170: -4694200843622318026
+      overworld_tileset_snow_0: 2389812055480925604
+      overworld_tileset_snow_67: 8662325911800900900
+      overworld_tileset_snow_159: 320219042558520384
+      overworld_tileset_snow_3: 6673234788415462650
+      overworld_tileset_snow_158: 2186969150186091675
+      overworld_tileset_snow_51: 3844085807324348431
+      overworld_tileset_snow_185: 4230213832828025584
+      overworld_tileset_snow_177: -5837547411526102778
+      overworld_tileset_snow_41: -6811009179955900247
+      overworld_tileset_snow_167: 7157685901722775541
+      overworld_tileset_snow_5: -5778733735198393295
+      overworld_tileset_snow_149: -5750179061873920075
+      overworld_tileset_snow_150: 1277152067280637025
+      overworld_tileset_snow_64: -2712922402660414273
+      overworld_tileset_snow_63: -4147057384924016653
+      overworld_tileset_snow_20: -1526821926363320681
+      overworld_tileset_snow_189: 6232762433989810707
+      overworld_tileset_snow_207: -476358213638912410
+      overworld_tileset_snow_204: -1615791647418769825
+      overworld_tileset_snow_140: 4507003673333323593
+      overworld_tileset_snow_90: 4264956180252522260
+      overworld_tileset_snow_142: 5291974669198388179
+      overworld_tileset_snow_12: 1386386505403365891
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

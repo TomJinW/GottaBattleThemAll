@@ -105,6 +105,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -808,6 +809,34 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      character.fliped_13: 8251590449208926341
+      character.fliped_0: 8134165857129934298
+      character.fliped_14: 3075662961336668974
+      character.fliped_10: -342000868888400504
+      character.fliped_20: 510619187830799747
+      character.fliped_24: -2577981373453213805
+      character.fliped_26: 6717856211128893159
+      character.fliped_21: -8081286066152037503
+      character.fliped_15: -4538508682967478489
+      character.fliped_1: -8129320857196096393
+      character.fliped_4: 5582532514764804391
+      character.fliped_8: 1097119562765440566
+      character.fliped_25: -1665699607275977428
+      character.fliped_9: -887970926143758025
+      character.fliped_5: -1869863275332404922
+      character.fliped_3: 5492317819857287123
+      character.fliped_12: 8356103542576548030
+      character.fliped_23: 1927425951624803904
+      character.fliped_7: 3894887559428697356
+      character.fliped_11: -8234068987168445681
+      character.fliped_19: -5341566534132938931
+      character.fliped_2: -2106651038560936024
+      character.fliped_22: 4877974765292582249
+      character.fliped_6: 4287575953472324831
+      character.fliped_18: -2438598661210508699
+      character.fliped_17: 2937092034151224012
+      character.fliped_16: 2561022571064417354
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
